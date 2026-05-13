@@ -480,6 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1760391178}
   - component: {fileID: 1760391179}
+  - component: {fileID: 1760391180}
   m_Layer: 0
   m_Name: LOCAL_MANAGERS
   m_TagString: Untagged
@@ -514,6 +515,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7e9e2443db934993aa1b1d720638532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameInput
+--- !u!114 &1760391180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760391177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c36268cc9e5d4074aa46e64d5bd00ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameManager
 --- !u!1 &2039596629
 GameObject:
   m_ObjectHideFlags: 0
