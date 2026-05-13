@@ -9,4 +9,5 @@
   <Project Path="FMODUnity.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.Public.csproj" />
   <Project Path="FMODUnityResonance.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
 </Solution>
