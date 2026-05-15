@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,7 @@ namespace UntitledDungeonGame
 
         private ServerCharacter _character;
         public ServerCharacter Character => _character;
-
+        
         private void Awake()
         {
             Instance = this;
@@ -21,6 +22,7 @@ namespace UntitledDungeonGame
         private void Start()
         {
             GameInput.Instance.OnMove += GameInput_OnMove;
+            InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
         }
 
         private void OnDestroy()
@@ -31,6 +33,17 @@ namespace UntitledDungeonGame
             }
 
             GameInput.Instance.OnMove -= GameInput_OnMove;
+            InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
+        }
+
+        private void OnInventoryOpenChanged(bool isOpen)
+        {
+            _character.Movement?.ReceiveMoveInput(Vector2.zero);
+            
+            if(!isOpen)
+            {
+                _character.Movement?.ReceiveMoveInput(GameInput.Instance.MoveInput);
+            }
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext context)
@@ -40,7 +53,7 @@ namespace UntitledDungeonGame
                 return;
             }
 
-            _character.Movement?.ReceiveMoveInput(context.ReadValue<Vector2>());
+            _character.Movement?.ReceiveMoveInput(GameInput.Instance.MoveInput);
         }
     }
 }

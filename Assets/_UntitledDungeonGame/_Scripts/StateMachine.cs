@@ -8,6 +8,8 @@ namespace UntitledDungeonGame
         protected Dictionary<AIState, BaseState> _states = new();
 
         protected BaseState _currentState;
+        public BaseState CurrentState => _currentState;
+        
         protected bool _isTransitioningState = false;
 
         protected ServerCharacter _serverCharacter;

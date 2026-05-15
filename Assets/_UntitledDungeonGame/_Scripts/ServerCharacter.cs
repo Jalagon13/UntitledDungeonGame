@@ -24,8 +24,8 @@ namespace UntitledDungeonGame
         private CharacterStateMachine _aiType;
 
         [SerializeField]
-        private CharacterDataSO _characterData;
-        public CharacterDataSO CharacterData => _characterData;
+        private CharacterSO _characterData;
+        public CharacterSO CharacterData => _characterData;
 
         [SerializeField]
         private ServerCharacterMovement _serverCharacterMovement;
