@@ -29,5 +29,13 @@ namespace UntitledDungeonGame
             _iconImage.sprite = showItem ? stack.Item.InventoryIcon : null;
             _countText.text = showItem && stack.Amount > 1 ? stack.Amount.ToString() : string.Empty;
         }
+
+        public void SetSelected(bool isSelected)
+        {
+            if (_selectedImage != null)
+            {
+                _selectedImage.gameObject.SetActive(isSelected);
+            }
+        }
     }
 }

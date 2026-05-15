@@ -31,6 +31,9 @@ namespace UntitledDungeonGame
         [SerializeField, Min(_minimumHotbarSlotCount), Tooltip("Number of slots reserved for the hotbar at the bottom of the screen.")]
         private int _hotbarSlotCount = 8;
 
+        [SerializeField, Min(0), Tooltip("Hotbar slot selected when the game starts. Clamped to the available hotbar range.")]
+        private int _startingSelectedHotbarSlotIndex = 0;
+
         [Header("Stacking")]
         [SerializeField, Min(1), Tooltip("Maximum number of items allowed in a single stack for stackable items.")]
         private int _inventoryStackMax = 9999;
@@ -56,12 +59,13 @@ namespace UntitledDungeonGame
         private void Awake()
         {
             Instance = this;
+            ClampStartingSelectedHotbarSlotIndex();
             InitializeSlots();
         }
 
         private IEnumerator Start()
         {
-            SelectHotbarSlot(0);
+            SelectHotbarSlot(_startingSelectedHotbarSlotIndex);
 
             GameInput.Instance.OnSelectSlot += GameInput_OnSelectSlot;
             GameInput.Instance.OnScrollWheel += GameInput_OnScrollWheel;
@@ -92,6 +96,11 @@ namespace UntitledDungeonGame
             
             // HealthManager.Instance.OnDeath -= HandleDeath;
 
+        }
+
+        private void OnValidate()
+        {
+            ClampStartingSelectedHotbarSlotIndex();
         }
 
         #region Input
@@ -153,7 +162,7 @@ namespace UntitledDungeonGame
 
         private void GameInput_OnSelectSlot(object sender, InputAction.CallbackContext context)
         {
-            if (!context.started || Player.Instance.Character.StateMachine.CurrentState.StateKey != AIState.Dead)
+            if (!context.started || Player.Instance.Character.StateMachine.CurrentState.StateKey == AIState.Dead)
             {
                 return;
             }
@@ -172,13 +181,13 @@ namespace UntitledDungeonGame
 
         private void GameInput_OnScrollWheel(object sender, InputAction.CallbackContext context)
         {
-            if (!context.performed || Player.Instance.Character.StateMachine.CurrentState.StateKey != AIState.Dead)
+            if (!context.performed || Player.Instance.Character.StateMachine.CurrentState.StateKey == AIState.Dead)
             {
                 return;
             }
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
-            int itemCount = _hotbarSlotCount;
+            int itemCount = HotbarSlotCount;
             if (itemCount == 0)
             {
                 return;
@@ -690,8 +699,8 @@ namespace UntitledDungeonGame
                 return;
             }
 
-            SelectedHotbarStack = _slots[SelectedHotbarSlotIndex].Clone();
-            OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack.Clone());
+            SelectedHotbarStack = _slots[SelectedHotbarSlotIndex];
+            OnSelectedHotbarSlotChanged?.Invoke(SelectedHotbarSlotIndex, SelectedHotbarStack);
         }
 
         public InventoryStack GetSlot(int slotIndex)
@@ -712,6 +721,12 @@ namespace UntitledDungeonGame
             {
                 _slots.Add(new InventoryStack());
             }
+        }
+
+        private void ClampStartingSelectedHotbarSlotIndex()
+        {
+            int maxHotbarIndex = Mathf.Max(0, _hotbarSlotCount - 1);
+            _startingSelectedHotbarSlotIndex = Mathf.Clamp(_startingSelectedHotbarSlotIndex, 0, maxHotbarIndex);
         }
     }
 }

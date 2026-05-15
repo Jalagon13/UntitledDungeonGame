@@ -25,6 +25,7 @@ namespace UntitledDungeonGame
         {
             InventoryManager.Instance.OnInventoryChanged -= RefreshHotbar;
             InventoryManager.Instance.OnInventoryOpenChanged -= UpdateHotbarDisplay;
+            InventoryManager.Instance.OnSelectedHotbarSlotChanged -= HandleSelectedHotbarChanged;
 
             if (NetworkManager != null)
             {
@@ -37,9 +38,12 @@ namespace UntitledDungeonGame
             if (NetworkManager.LocalClientId != clientId) return;
 
             BuildHotbar();
+            RefreshHotbar();
+            RefreshSelection(InventoryManager.Instance.SelectedHotbarSlotIndex);
             
             InventoryManager.Instance.OnInventoryChanged += RefreshHotbar;
             InventoryManager.Instance.OnInventoryOpenChanged += UpdateHotbarDisplay;
+            InventoryManager.Instance.OnSelectedHotbarSlotChanged += HandleSelectedHotbarChanged;
         }
 
         private void RefreshHotbar()
@@ -58,6 +62,19 @@ namespace UntitledDungeonGame
                 HotbarSlotUI hotbarSlotUI = CreateSlotInstance(_hotbarSlotHolder);
                 hotbarSlotUI.Initialize(this, slotIndex);
                 _hotbarSlotUis.Add(hotbarSlotUI);
+            }
+        }
+
+        private void HandleSelectedHotbarChanged(int selectedSlotIndex, InventoryStack stack)
+        {
+            RefreshSelection(selectedSlotIndex);
+        }
+
+        private void RefreshSelection(int selectedSlotIndex)
+        {
+            foreach (HotbarSlotUI slotUi in _hotbarSlotUis)
+            {
+                slotUi.SetSelected(slotUi.SlotIndex == selectedSlotIndex);
             }
         }
 
