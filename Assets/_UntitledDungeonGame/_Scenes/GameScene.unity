@@ -491,7 +491,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 11
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -871,7 +871,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 12
+    OrthographicSize: 11
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -1551,6 +1551,7 @@ MonoBehaviour:
   _craftingMenuUI: {fileID: 0}
   _slotCount: 24
   _hotbarSlotCount: 8
+  _startingSelectedHotbarSlotIndex: 0
   _inventoryStackMax: 9999
   _initialDelay: 0.25
   _delayBetweenItemsGiven: 0.2

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc46b6a2ebe74e5187f3b6285419748, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.CharacterDataSO
-  BaseSpeed: 5
+  BaseSpeed: 4.5
