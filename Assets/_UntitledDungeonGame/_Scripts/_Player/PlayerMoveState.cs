@@ -10,7 +10,7 @@ namespace UntitledDungeonGame
     {
         private PlayerStateMachine _ctx;
         // private Timer _playWalkSoundTimer;
-        private float _walkSoundCooldown = 0.28f;
+        // private float _walkSoundCooldown = 0.28f;
 
         public PlayerMoveState(AIState key, StateMachine context) : base(key, context)
         {

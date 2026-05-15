@@ -76,7 +76,7 @@ namespace UntitledDungeonGame
 
             _dragItemIcon.sprite = cursorStack.Item.InventoryIcon;
             _dragItemIcon.enabled = cursorStack.Item.InventoryIcon != null;
-            _dragItemCountText.text = string.Empty;
+            _dragItemCountText.text = cursorStack.Amount > 1 ? cursorStack.Amount.ToString() : string.Empty;
         }
 
         private void HandleSelectedHotbarChanged(int arg1, InventoryStack stack)
@@ -150,6 +150,12 @@ namespace UntitledDungeonGame
             if (button == PointerEventData.InputButton.Left)
             {
                 InventoryManager.Instance.HandleSlotLeftClick(slotIndex, isShiftHeld);
+                return;
+            }
+
+            if (button == PointerEventData.InputButton.Right)
+            {
+                InventoryManager.Instance.HandleSlotRightClick(slotIndex);
             }
         }
     }

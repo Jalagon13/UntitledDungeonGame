@@ -8,6 +8,7 @@ namespace UntitledDungeonGame
     public class HotbarSlotUI : MonoBehaviour
     {
         [SerializeField] private Image _iconImage;
+        [SerializeField] private Image _selectedImage;
         [SerializeField] private TextMeshProUGUI _countText;
 
         private HotbarUI _hotbarUI;
@@ -26,7 +27,7 @@ namespace UntitledDungeonGame
             bool showItem = stack != null && !stack.IsEmpty && stack.Item != null;
             _iconImage.enabled = showItem && stack.Item.InventoryIcon != null;
             _iconImage.sprite = showItem ? stack.Item.InventoryIcon : null;
-            _countText.text = string.Empty;
+            _countText.text = showItem && stack.Amount > 1 ? stack.Amount.ToString() : string.Empty;
         }
     }
 }

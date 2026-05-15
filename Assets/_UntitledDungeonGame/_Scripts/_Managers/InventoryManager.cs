@@ -30,6 +30,11 @@ namespace UntitledDungeonGame
 
         [SerializeField, Min(_minimumHotbarSlotCount), Tooltip("Number of slots reserved for the hotbar at the bottom of the screen.")]
         private int _hotbarSlotCount = 8;
+
+        [Header("Stacking")]
+        [SerializeField, Min(1), Tooltip("Maximum number of items allowed in a single stack for stackable items.")]
+        private int _inventoryStackMax = 9999;
+
         public int HotbarSlotCount => Mathf.Min(_hotbarSlotCount, _slots.Count);
         public int SelectedHotbarSlotIndex { get; private set; } = -1;
 
@@ -46,7 +51,7 @@ namespace UntitledDungeonGame
         public InventoryStack SelectedHotbarStack { get; private set; } = new();
 
         public bool IsInventoryOpen { get; private set; }
-        public bool IsFull => !_slots.Exists(slot => slot.IsEmpty);
+        public bool IsFull => !_slots.Exists(HasRoomForAnyItem);
 
         private void Awake()
         {
@@ -71,7 +76,7 @@ namespace UntitledDungeonGame
 
             foreach (InventoryStack slotItem in _startingItems)
             {
-                AddItem(slotItem.Item);
+                AddItem(slotItem.Item, slotItem.Amount);
                 yield return new WaitForSeconds(_delayBetweenItemsGiven);
             }
         }
@@ -216,7 +221,7 @@ namespace UntitledDungeonGame
 
                 if (inventorySlotItem.Item.ItemName == item.ItemName)
                 {
-                    itemCounter++;
+                    itemCounter += inventorySlotItem.Amount;
                 }
             }
 
@@ -233,7 +238,7 @@ namespace UntitledDungeonGame
 
                 if (inventorySlotItem.Item.ItemName == item.ItemName)
                 {
-                    itemCounter++;
+                    itemCounter += inventorySlotItem.Amount;
                 }
             }
 
@@ -253,6 +258,7 @@ namespace UntitledDungeonGame
             }
 
             int remainingAmount = amount;
+            FillExistingStacks(item, ref remainingAmount);
             FillEmptySlots(item, ref remainingAmount);
 
             int amountAdded = amount - remainingAmount;
@@ -285,10 +291,10 @@ namespace UntitledDungeonGame
                     continue;
                 }
 
-                int remainingAmount = AddItem(slotItem.Item);
+                int remainingAmount = AddItem(slotItem.Item, slotItem.Amount);
                 if (remainingAmount > 0)
                 {
-                    leftOvers.Add(new InventoryStack(slotItem.Item));
+                    leftOvers.Add(new InventoryStack(slotItem.Item, remainingAmount));
                 }
             }
 
@@ -311,11 +317,14 @@ namespace UntitledDungeonGame
                     continue;
                 }
 
-                slot.Clear();
-                remainingAmount--;
+                remainingAmount -= slot.RemoveAmount(remainingAmount);
             }
 
-            RefreshAfterInventoryChange();
+            if (remainingAmount < amount)
+            {
+                RefreshAfterInventoryChange();
+            }
+
             return remainingAmount;
         }
 
@@ -335,14 +344,45 @@ namespace UntitledDungeonGame
                     continue;
                 }
 
-                int remainingAmount = RemoveItem(slotItem.Item);
+                int remainingAmount = RemoveItem(slotItem.Item, slotItem.Amount);
                 if (remainingAmount > 0)
                 {
-                    leftOvers.Add(new InventoryStack(slotItem.Item));
+                    leftOvers.Add(new InventoryStack(slotItem.Item, remainingAmount));
                 }
             }
 
             return leftOvers;
+        }
+
+        private void FillExistingStacks(ItemSO item, ref int remainingAmount)
+        {
+            if (item == null || remainingAmount <= 0)
+            {
+                return;
+            }
+
+            int maxStackSize = GetMaxStackSize(item);
+            if (maxStackSize <= 1)
+            {
+                return;
+            }
+
+            foreach (InventoryStack slot in _slots)
+            {
+                if (remainingAmount <= 0)
+                {
+                    return;
+                }
+
+                if (slot.IsEmpty || slot.Item != item || slot.Amount >= maxStackSize)
+                {
+                    continue;
+                }
+
+                int amountToAdd = Mathf.Min(maxStackSize - slot.Amount, remainingAmount);
+                slot.AddAmount(amountToAdd);
+                remainingAmount -= amountToAdd;
+            }
         }
 
         private void FillEmptySlots(ItemSO item, ref int remainingAmount)
@@ -359,8 +399,9 @@ namespace UntitledDungeonGame
                     continue;
                 }
 
-                slot.Set(item);
-                remainingAmount--;
+                int amountToAdd = Mathf.Min(GetMaxStackSize(item), remainingAmount);
+                slot.Set(item, amountToAdd);
+                remainingAmount -= amountToAdd;
             }
         }
 
@@ -411,9 +452,69 @@ namespace UntitledDungeonGame
                 return;
             }
 
+            if (CanStacksMerge(slotItem, CursorStack))
+            {
+                int movedAmount = MoveAmount(CursorStack, slotItem, GetMaxStackSize(slotItem.Item));
+                if (movedAmount > 0)
+                {
+                    RefreshAfterInventoryChange();
+                    NotifyCursorStackChanged();
+                }
+
+                return;
+            }
+
             InventoryStack swappedItem = slotItem.Clone();
             _slots[slotIndex] = CursorStack.Clone();
             CursorStack = swappedItem;
+            RefreshAfterInventoryChange();
+            NotifyCursorStackChanged();
+        }
+
+        public void HandleSlotRightClick(int slotIndex)
+        {
+            if (!IsValidSlotIndex(slotIndex))
+            {
+                return;
+            }
+
+            InventoryStack slotItem = _slots[slotIndex];
+
+            if (CursorStack.IsEmpty)
+            {
+                if (slotItem.IsEmpty)
+                {
+                    return;
+                }
+
+                int cursorAmount = Mathf.CeilToInt(slotItem.Amount * 0.5f);
+                CursorStack = new InventoryStack(slotItem.Item, cursorAmount);
+                slotItem.RemoveAmount(cursorAmount);
+                RefreshAfterInventoryChange();
+                NotifyCursorStackChanged();
+                return;
+            }
+
+            if (slotItem.IsEmpty)
+            {
+                _slots[slotIndex].Set(CursorStack.Item, 1);
+                CursorStack.RemoveAmount(1);
+                RefreshAfterInventoryChange();
+                NotifyCursorStackChanged();
+                return;
+            }
+
+            if (!CanStacksMerge(slotItem, CursorStack))
+            {
+                return;
+            }
+
+            int movedAmount = MoveAmount(CursorStack, slotItem, GetMaxStackSize(slotItem.Item), 1);
+            if (movedAmount <= 0)
+            {
+                return;
+            }
+
             RefreshAfterInventoryChange();
             NotifyCursorStackChanged();
         }
@@ -468,6 +569,28 @@ namespace UntitledDungeonGame
                 return;
             }
 
+            int maxStackSize = GetMaxStackSize(sourceItem.Item);
+
+            for (int targetIndex = targetStart; targetIndex < targetEnd; targetIndex++)
+            {
+                if (targetIndex == sourceIndex)
+                {
+                    continue;
+                }
+
+                InventoryStack targetItem = _slots[targetIndex];
+                if (!CanStacksMerge(targetItem, sourceItem))
+                {
+                    continue;
+                }
+
+                MoveAmount(sourceItem, targetItem, maxStackSize);
+                if (sourceItem.IsEmpty)
+                {
+                    return;
+                }
+            }
+
             for (int targetIndex = targetStart; targetIndex < targetEnd; targetIndex++)
             {
                 if (targetIndex == sourceIndex)
@@ -481,10 +604,59 @@ namespace UntitledDungeonGame
                     continue;
                 }
 
-                targetItem.Set(sourceItem.Item);
-                sourceItem.Clear();
-                return;
+                int amountToMove = Mathf.Min(maxStackSize, sourceItem.Amount);
+                targetItem.Set(sourceItem.Item, amountToMove);
+                sourceItem.RemoveAmount(amountToMove);
+
+                if (sourceItem.IsEmpty)
+                {
+                    return;
+                }
             }
+        }
+
+        private bool HasRoomForAnyItem(InventoryStack slot)
+        {
+            return slot.IsEmpty || (slot.Item != null && slot.Amount < GetMaxStackSize(slot.Item));
+        }
+
+        private bool CanStacksMerge(InventoryStack target, InventoryStack source)
+        {
+            return target != null &&
+                source != null &&
+                !target.IsEmpty &&
+                !source.IsEmpty &&
+                target.Item == source.Item &&
+                target.Amount < GetMaxStackSize(target.Item);
+        }
+
+        private int MoveAmount(InventoryStack source, InventoryStack target, int maxTargetAmount, int requestedAmount = int.MaxValue)
+        {
+            if (source == null || target == null || source.IsEmpty || target.IsEmpty)
+            {
+                return 0;
+            }
+
+            int amountToMove = Mathf.Min(requestedAmount, source.Amount);
+            amountToMove = Mathf.Min(amountToMove, maxTargetAmount - target.Amount);
+            if (amountToMove <= 0)
+            {
+                return 0;
+            }
+
+            target.AddAmount(amountToMove);
+            source.RemoveAmount(amountToMove);
+            return amountToMove;
+        }
+
+        private int GetMaxStackSize(ItemSO item)
+        {
+            if (item == null)
+            {
+                return 1;
+            }
+
+            return item.IsStackable ? _inventoryStackMax : 1;
         }
 
         #endregion

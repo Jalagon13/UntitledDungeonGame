@@ -1143,7 +1143,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -32, y: -32}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &852336811
 MonoBehaviour:
@@ -1199,7 +1199,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1551,10 +1551,12 @@ MonoBehaviour:
   _craftingMenuUI: {fileID: 0}
   _slotCount: 24
   _hotbarSlotCount: 8
+  _inventoryStackMax: 9999
   _initialDelay: 0.25
   _delayBetweenItemsGiven: 0.2
   _startingItems:
   - _item: {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
+    _amount: 99
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

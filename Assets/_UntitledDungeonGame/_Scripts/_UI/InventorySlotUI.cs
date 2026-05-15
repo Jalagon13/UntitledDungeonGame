@@ -31,7 +31,7 @@ namespace UntitledDungeonGame
             bool showItem = stack != null && !stack.IsEmpty && stack.Item != null;
             _iconImage.enabled = showItem && stack.Item.InventoryIcon != null;
             _iconImage.sprite = showItem ? stack.Item.InventoryIcon : null;
-            _countText.text = string.Empty;
+            _countText.text = showItem && stack.Amount > 1 ? stack.Amount.ToString() : string.Empty;
         }
     }
 }
