@@ -1,12 +1,19 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace UntitledDungeonGame
 {
     [RequireComponent(typeof(ServerCharacter))]
-    public class Player : MonoBehaviour
+    public class Player : NetworkBehaviour
     {
+        public static event EventHandler<PlayerIdEventArgs> OnAnyPlayerSpawned;
+        public class PlayerIdEventArgs : EventArgs
+        {
+            public ulong PlayerId;
+        }
+        
         public static Player Instance { get; private set; }
 
         private ServerCharacter _character;
@@ -14,18 +21,10 @@ namespace UntitledDungeonGame
         
         private void Awake()
         {
-            Instance = this;
-
             _character = GetComponent<ServerCharacter>();
         }
 
-        private void Start()
-        {
-            GameInput.Instance.OnMove += GameInput_OnMove;
-            InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
-        }
-
-        private void OnDestroy()
+        public override void OnDestroy()
         {
             if (Instance == this)
             {
@@ -34,6 +33,20 @@ namespace UntitledDungeonGame
 
             GameInput.Instance.OnMove -= GameInput_OnMove;
             InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
+        }
+
+        public void OnNetworkSpawnLocalClientInitializations()
+        {
+            Instance = this;
+
+            OnAnyPlayerSpawned?.Invoke(this, new PlayerIdEventArgs
+            {
+                PlayerId = OwnerClientId
+            });
+
+            // local player start up code here, maybe input
+            GameInput.Instance.OnMove += GameInput_OnMove;
+            InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
         }
 
         private void OnInventoryOpenChanged(bool isOpen)

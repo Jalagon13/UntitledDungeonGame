@@ -1,0 +1,47 @@
+using System;
+using UnityEngine;
+
+namespace UntitledDungeonGame
+{
+    [Serializable]
+    public class AnimationConfigSO
+    {
+        public AnimationClip SideMoveClip;
+        public AnimationClip SideIdleClip;
+        public AnimationClip FrontMoveClip;
+        public AnimationClip FrontIdleClip;
+        public AnimationClip BackMoveClip;
+        public AnimationClip BackIdleClip;
+    }
+
+    public enum CardinalDirection
+    {
+        None,
+        North,
+        South,
+        West,
+        East
+    }
+
+    public enum CharacterStateMachine
+    {
+        Player,
+        BasicNpc
+    }
+
+    public enum MovementState
+    {
+        Idle,
+        Moving,
+        Knockback,
+        Pursuing,
+        Fleeing
+    }
+
+    public enum LifeState
+    {
+        Alive,
+        IFrame,
+        Dead
+    }
+}

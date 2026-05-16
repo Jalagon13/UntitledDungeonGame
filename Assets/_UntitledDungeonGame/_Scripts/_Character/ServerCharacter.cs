@@ -3,21 +3,7 @@ using Unity.Netcode;
 
 namespace UntitledDungeonGame
 {
-    public enum CharacterStateMachine
-    {
-        Player,
-        BasicNpc
-    }
-
-    public enum MovementState
-    {
-        Idle,
-        Moving,
-        Knockback,
-        Pursuing,
-        Fleeing
-    }
-
+    [RequireComponent(typeof(NetworkHealthState), typeof(NetworkLifeState))]
     public class ServerCharacter : NetworkBehaviour
     {
         [SerializeField]
@@ -31,15 +17,38 @@ namespace UntitledDungeonGame
         private ServerCharacterMovement _serverCharacterMovement;
         public ServerCharacterMovement Movement => _serverCharacterMovement;
 
+        [SerializeField]
+        private ClientCharacter _clientCharacter;
+        public ClientCharacter ClientCharacter => _clientCharacter;
+
+        public NetworkHealthState NetHealthState { get; private set; }
+        public int HitPoints
+        {
+            get => NetHealthState.HitPoints.Value;
+            private set => NetHealthState.HitPoints.Value = value;
+        }
+
+        public NetworkLifeState NetLifeState { get; private set; }
+        public LifeState LifeState
+        {
+            get => NetLifeState.LifeState.Value;
+            private set => NetLifeState.LifeState.Value = value;
+        }
+
+
         private StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;
 
         public NetworkVariable<MovementState> MovementState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<CardinalDirection> CardinalDirection { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SuperAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<AIStateData> SubAIState { get; set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         private void Awake()
         {
+            NetHealthState = GetComponent<NetworkHealthState>();
+            NetLifeState = GetComponent<NetworkLifeState>();
+
             switch (_aiType)
             {
                 case CharacterStateMachine.BasicNpc:

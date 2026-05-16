@@ -12,4 +12,5 @@
   <Project Path="FMODUnityResonance.csproj" />
   <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="FMODUnityResonanceEditor.csproj" />
+  <Project Path="DigitalDust.csproj" />
 </Solution>

@@ -12,8 +12,11 @@ GameObject:
   - component: {fileID: 5414259950147133845}
   - component: {fileID: 7533987530183660109}
   - component: {fileID: 4586583695564191674}
+  - component: {fileID: 803792098292795098}
+  - component: {fileID: 8924049036358242053}
   - component: {fileID: 1902777031516221210}
   - component: {fileID: 8316067687826058288}
+  - component: {fileID: 7146354698580210200}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -34,7 +37,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2662637307106457156}
+  - {fileID: 818794910293839067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &5414259950147133845
@@ -76,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1733515650
+  GlobalObjectIdHash: 1336743837
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -101,6 +104,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85206337afaa54a3c990ad7dde1c96b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.Player
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &803792098292795098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590752a1436de41328ebbe3c0fd0026a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.NetworkLifeState
+  ShowTopMostFoldoutHeaderGroup: 1
+  _lifeState:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+--- !u!114 &8924049036358242053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2337d3bcb8d46c9a9a74ab785501cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.NetworkHealthState
+  ShowTopMostFoldoutHeaderGroup: 1
+  HitPoints:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!114 &1902777031516221210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +157,7 @@ MonoBehaviour:
   _aiType: 0
   _characterData: {fileID: 11400000, guid: 68201d85a864340baa683230156879c1, type: 2}
   _serverCharacterMovement: {fileID: 8316067687826058288}
+  _clientCharacter: {fileID: 7738663476197840072}
 --- !u!114 &8316067687826058288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +172,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacterMovement
   _serverCharacter: {fileID: 1902777031516221210}
   _rigidbody2D: {fileID: 5414259950147133845}
+--- !u!114 &7146354698580210200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d94f949c235b4e2a9126542adb3206c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerCharacterAnimation
+  ShowTopMostFoldoutHeaderGroup: 1
+  _serverCharacter: {fileID: 1902777031516221210}
+  _networkLifeState: {fileID: 803792098292795098}
+  _spriteAnimHandlers:
+  - {fileID: 6435305078094566520}
 --- !u!1 &298901437459232130
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,9 +198,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3090479732997603263}
+  - component: {fileID: 3089342382425336836}
   - component: {fileID: 4979016340004686271}
+  - component: {fileID: 1560931664957847961}
+  - component: {fileID: 6435305078094566520}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: PlayerSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,6 +224,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2662637307106457156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &3089342382425336836
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298901437459232130}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8aa329af98810430b88ed6a83dca2b56, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &4979016340004686271
 SpriteRenderer:
   serializedVersion: 2
@@ -217,11 +300,82 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 1
+--- !u!114 &1560931664957847961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298901437459232130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 1
+  m_Animator: {fileID: 3089342382425336836}
+  TransitionStateInfoList: []
+  AnimatorParameterEntries:
+    ParameterEntries: []
+  AnimatorParametersExpanded: 0
+--- !u!114 &6435305078094566520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298901437459232130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0e649f3e1146a79fe37e804eb0387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerSpriteAnimHandler
+  ShowTopMostFoldoutHeaderGroup: 1
+  _animConfig:
+    SideMoveClip: {fileID: 7400000, guid: 83b6ce38a249f430c80be8129bbf4684, type: 2}
+    SideIdleClip: {fileID: 7400000, guid: 9b110df85b7ab41b1a0b657a572a1422, type: 2}
+    FrontMoveClip: {fileID: 7400000, guid: 31acc4b07a7f440898477663b7f1adc4, type: 2}
+    FrontIdleClip: {fileID: 7400000, guid: 53a65973bef6a42b881028f27f2dc675, type: 2}
+    BackMoveClip: {fileID: 7400000, guid: 3a92d4d32b8ee40e48af66eabc193a34, type: 2}
+    BackIdleClip: {fileID: 7400000, guid: ba4a369ac59db4001b672de585f11dcd, type: 2}
+--- !u!1 &2573796652508098368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4273721582200961487}
+  m_Layer: 0
+  m_Name: Colliders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4273721582200961487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573796652508098368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 818794910293839067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3919997590328884195
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,11 +400,61 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3919997590328884195}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3090479732997603263}
+  m_Father: {fileID: 818794910293839067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7070883625793645487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 818794910293839067}
+  - component: {fileID: 7738663476197840072}
+  m_Layer: 0
+  m_Name: ClientCharacter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &818794910293839067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7070883625793645487}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4273721582200961487}
+  - {fileID: 2662637307106457156}
   m_Father: {fileID: 4937875723858935662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7738663476197840072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7070883625793645487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4705dda7d1c784e45831b0b99c8a1156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ClientCharacter
+  ShowTopMostFoldoutHeaderGroup: 1
+  _serverCharacter: {fileID: 1902777031516221210}
+  _visuals: {fileID: 3919997590328884195}
+  _colliderHolder: {fileID: 2573796652508098368}
