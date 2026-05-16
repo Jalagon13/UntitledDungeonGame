@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.CharacterDataSO
   BaseSpeed: 4.5
   CanMove: 1
-  TurnSharpness: 1
+  TurnSharpness: 8
   IsNpc: 0

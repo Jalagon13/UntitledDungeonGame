@@ -26,10 +26,10 @@ namespace UntitledDungeonGame
 
         public override void CheckSwitchStates()
         {
-            // if (_ctx.HeldItem is ToolItemSO && _ctx.SwingCooldownTimer.PercentRemaining <= 0 && GameInput.Instance.GetPrimaryHeldDown() && !Pointer.IsOverUI() && !Pointer.IsOverInteractable())
-            // {
-            //     SwitchState(new AIStateData(AIState.Attacking));
-            // }
+            if (_ctx.HeldItem is ToolItemSO && GameInput.Instance.GetPrimaryHeldDown())
+            {
+                SwitchState(new AIStateData(AIState.Attacking));
+            }
             // else if (_ctx.ServerCharacter.LifeState == LifeState.Dead)
             // {
             //     Vector3 payload = new(_ctx.ServerCharacter.InflicterToTargetDirection.x, _ctx.ServerCharacter.InflicterToTargetDirection.y, _ctx.ServerCharacter.KnockbackForceFromInflicter);

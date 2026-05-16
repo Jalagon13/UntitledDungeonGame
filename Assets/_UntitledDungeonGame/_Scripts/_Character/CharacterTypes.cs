@@ -44,4 +44,11 @@ namespace UntitledDungeonGame
         IFrame,
         Dead
     }
+
+    public enum ToolType
+    {
+        Pickaxe,
+        Axe,
+        Sword
+    }
 }
