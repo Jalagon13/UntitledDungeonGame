@@ -18,7 +18,7 @@ namespace UntitledDungeonGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log("Player entering swing");
+            // Debug.Log("Player entering swing");
             _toolItemSO = _ctx.HeldItem as ToolItemSO;
             _swingDirection = _ctx.PlayerRef.PlayerArmController.AimDirection.Value;
 

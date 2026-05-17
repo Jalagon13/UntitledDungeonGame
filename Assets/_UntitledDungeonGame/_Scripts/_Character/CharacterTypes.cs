@@ -51,4 +51,10 @@ namespace UntitledDungeonGame
         Axe,
         Sword
     }
+    
+    public enum MiningState
+    {
+        Idle,
+        Detecting
+    }
 }

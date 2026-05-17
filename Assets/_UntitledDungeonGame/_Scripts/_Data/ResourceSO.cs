@@ -16,5 +16,7 @@ namespace UntitledDungeonGame
         public ResourceObject ResourcePrefab;
         [Tooltip("Hardness value determining mining speed")]
         public float Hardness = 1f;
+        [Tooltip("Which tool is needed to harvest")]
+        public ToolType HarvestType;
     }
 }

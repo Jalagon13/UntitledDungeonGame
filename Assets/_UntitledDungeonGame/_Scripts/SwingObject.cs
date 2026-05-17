@@ -6,12 +6,12 @@ namespace UntitledDungeonGame
     {
         public void OnStartSwing()
         {
-            Debug.Log($"Start Swinging {gameObject.name}");
+            // Debug.Log($"Start Swinging {gameObject.name}");
         }
         
         public void OnEndSwing()
         {
-            Debug.Log($"End Swinging {gameObject.name}");
+            // Debug.Log($"End Swinging {gameObject.name}");
         }
     }
 }

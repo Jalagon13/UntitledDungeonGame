@@ -16,7 +16,7 @@ namespace UntitledDungeonGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log("Player switched to idle state");
+            // Debug.Log("Player switched to idle state");
         }
 
         public override void ExitState()

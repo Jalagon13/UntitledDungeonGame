@@ -19,7 +19,7 @@ namespace UntitledDungeonGame
 
         protected override void EnterState(AIStateData stateData)
         {
-            Debug.Log("Player switched to move state");
+            // Debug.Log("Player switched to move state");
             PlayFootStepSound();
 
             // _playWalkSoundTimer = new(_walkSoundCooldown);

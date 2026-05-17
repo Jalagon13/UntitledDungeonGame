@@ -92,7 +92,7 @@ namespace UntitledDungeonGame
             {
                 return;
             }
-            Debug.Log($"Setting move state");
+            
             _desiredDirection = _moveInput.normalized;
 
             if (_serverCharacter.MovementState.Value != MovementState.Moving)
@@ -107,7 +107,7 @@ namespace UntitledDungeonGame
             {
                 return;
             }
-            Debug.Log($"Setting idle state");
+            
             _desiredDirection = Vector2.zero;
 
             if (_serverCharacter.MovementState.Value != MovementState.Idle)
