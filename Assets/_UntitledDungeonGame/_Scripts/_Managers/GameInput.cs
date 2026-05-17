@@ -8,13 +8,16 @@ namespace UntitledDungeonGame
     {
         public static GameInput Instance { get; private set; }
 
+        public event EventHandler<InputAction.CallbackContext> OnPrimaryActionStarted;
+
         public event EventHandler<InputAction.CallbackContext> OnMove;
 
         public event EventHandler<InputAction.CallbackContext> OnToggleInventory;
         public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
 
-        private bool _isGameplayInputBlocked;
+        private bool _isGameplayInputBlocked, _primaryHeldDown;
+        public bool PrimaryActionHeldDown => _primaryHeldDown;
 
         public bool IsGameplayInputBlocked 
         {
@@ -36,6 +39,10 @@ namespace UntitledDungeonGame
 
             _playerInput = new();
             _playerInput.Enable();
+            
+            _playerInput.Player.PrimaryAction.started += PlayerInput_OnPrimaryAction;
+            _playerInput.Player.PrimaryAction.performed += PlayerInput_OnPrimaryAction;
+            _playerInput.Player.PrimaryAction.canceled += PlayerInput_OnPrimaryAction;
 
             _playerInput.Player.Move.started += PlayerInput_OnMove;
             _playerInput.Player.Move.performed += PlayerInput_OnMove;
@@ -53,6 +60,10 @@ namespace UntitledDungeonGame
                 Instance = null;
             }
 
+            _playerInput.Player.PrimaryAction.started -= PlayerInput_OnPrimaryAction;
+            _playerInput.Player.PrimaryAction.performed -= PlayerInput_OnPrimaryAction;
+            _playerInput.Player.PrimaryAction.canceled -= PlayerInput_OnPrimaryAction;
+
             _playerInput.Player.Move.started -= PlayerInput_OnMove;
             _playerInput.Player.Move.performed -= PlayerInput_OnMove;
             _playerInput.Player.Move.canceled -= PlayerInput_OnMove;
@@ -63,6 +74,15 @@ namespace UntitledDungeonGame
 
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnPrimaryAction(InputAction.CallbackContext context)
+        {
+            _primaryHeldDown = context.performed || context.started;
+            
+            if(_isGameplayInputBlocked) return;
+
+            OnPrimaryActionStarted?.Invoke(this, context);
         }
 
         private void PlayerInput_OnScrollWheel(InputAction.CallbackContext context)

@@ -16,8 +16,7 @@ MonoBehaviour:
   _itemDescription: 
   _inventoryIcon: {fileID: 21300000, guid: 6fd0b649401ca5b419a5ebf5df170c0f, type: 3}
   _isStackable: 1
-  <SwingGameObject>k__BackingField: {fileID: 0}
+  <SwingObject>k__BackingField: {fileID: 5679233240984726865, guid: 04dfbfaa35fb14731bd3b70db0353ede, type: 3}
   <Damage>k__BackingField: 4
   <Knockback>k__BackingField: 6
-  <SwingDuration>k__BackingField: 0.35
-  <SwingCooldown>k__BackingField: 0.25
+  <SwingDuration>k__BackingField: 0.5

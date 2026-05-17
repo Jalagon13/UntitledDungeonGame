@@ -605,7 +605,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000003348c09c
+  m_ApplyToSortingLayers: 000000003348c09cd1b51e73
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1490,6 +1490,7 @@ GameObject:
   - component: {fileID: 1760391179}
   - component: {fileID: 1760391180}
   - component: {fileID: 1760391181}
+  - component: {fileID: 1760391182}
   m_Layer: 0
   m_Name: LOCAL_MANAGERS
   m_TagString: Untagged
@@ -1558,6 +1559,23 @@ MonoBehaviour:
   _startingItems:
   - _item: {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
     _amount: 99
+  - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
+    _amount: 1
+--- !u!114 &1760391182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760391177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae7902aef3f547d49413643ccada030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameDataRegistry
+  _itemData:
+  - {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
+  - {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

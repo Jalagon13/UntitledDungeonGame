@@ -44,5 +44,8 @@ TagManager:
   - name: Player
     uniqueID: 2629847091
     locked: 0
+  - name: WorldAssets
+    uniqueID: 1931392465
+    locked: 0
   m_RenderingLayers:
   - Default

@@ -55,7 +55,15 @@ namespace UntitledDungeonGame
                     // _stateMachine = new BasicNpcStateMachine(this);
                     break;
                 case CharacterStateMachine.Player:
-                    _stateMachine = new PlayerStateMachine(this);
+                    if(TryGetComponent(out Player player))
+                    {
+                        _stateMachine = new PlayerStateMachine(this, player);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Ai type set to player but no player component found");
+                    }
+                    
                     break;
             }
         }

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace UntitledDungeonGame
 {
-    [RequireComponent(typeof(ServerCharacter))]
+    [RequireComponent(typeof(ServerCharacter), typeof(PlayerArmController))]
     public class Player : NetworkBehaviour
     {
         public static event EventHandler<PlayerIdEventArgs> OnAnyPlayerSpawned;
@@ -19,9 +19,15 @@ namespace UntitledDungeonGame
         private ServerCharacter _character;
         public ServerCharacter Character => _character;
         
+        private PlayerArmController _playerArmController;
+        public PlayerArmController PlayerArmController => _playerArmController;
+
+        public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
         private void Awake()
         {
             _character = GetComponent<ServerCharacter>();
+            _playerArmController = GetComponent<PlayerArmController>();
         }
 
         public override void OnDestroy()
@@ -33,6 +39,7 @@ namespace UntitledDungeonGame
 
             GameInput.Instance.OnMove -= GameInput_OnMove;
             InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
+            InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
         }
 
         public void OnNetworkSpawnLocalClientInitializations()
@@ -47,6 +54,21 @@ namespace UntitledDungeonGame
             // local player start up code here, maybe input
             GameInput.Instance.OnMove += GameInput_OnMove;
             InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
+            InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+        }
+
+        private void OnSelectedHotbarSlotChanged(int slotIndex, InventoryStack selectedHotbarSlotStack)
+        {
+            if (IsOwner)
+            {
+                ushort hotBatSlotStackItemID = GameDataRegistry.Instance.GetItemIdFromItemSO(selectedHotbarSlotStack.Item);
+                if (SelectedItemID.Value == hotBatSlotStackItemID || hotBatSlotStackItemID == GameDataRegistry.INVALID_ID)
+                {
+                    return;
+                }
+                Debug.Log($"Changed Selected Item ID: {hotBatSlotStackItemID}");
+                SelectedItemID.Value = hotBatSlotStackItemID;
+            }
         }
 
         private void OnInventoryOpenChanged(bool isOpen)

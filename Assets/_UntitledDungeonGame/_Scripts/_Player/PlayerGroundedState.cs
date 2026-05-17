@@ -26,7 +26,7 @@ namespace UntitledDungeonGame
 
         public override void CheckSwitchStates()
         {
-            if (_ctx.HeldItem is ToolItemSO && GameInput.Instance.GetPrimaryHeldDown())
+            if (_ctx.HeldItem is ToolItemSO && GameInput.Instance.PrimaryActionHeldDown)
             {
                 SwitchState(new AIStateData(AIState.Attacking));
             }
