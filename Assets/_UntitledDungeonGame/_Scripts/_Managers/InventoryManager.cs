@@ -41,6 +41,13 @@ namespace UntitledDungeonGame
         public int HotbarSlotCount => Mathf.Min(_hotbarSlotCount, _slots.Count);
         public int SelectedHotbarSlotIndex { get; private set; } = -1;
 
+
+        [SerializeField] 
+        private ItemCollectWorldUI _itemCollectPlatePrefab;
+        
+        [SerializeField]
+        private float _timeBetweenCollections = 0.1f;
+
         [Header("Starting Items")]
         [SerializeField] private float _initialDelay;
         [SerializeField] private float _delayBetweenItemsGiven;
@@ -55,6 +62,10 @@ namespace UntitledDungeonGame
 
         public bool IsInventoryOpen { get; private set; }
         public bool IsFull => !_slots.Exists(HasRoomForAnyItem);
+        
+        private bool _isCollecting;
+        private Queue<InventoryStack> _itemQueue = new();
+        private Dictionary<string, ItemCollectWorldUI> _itemPlates = new(); // Maybe replace string with an item id if I decide to make that later
 
         private void Awake()
         {
@@ -254,60 +265,88 @@ namespace UntitledDungeonGame
             return itemCounter >= amount;
         }
 
-        public int AddItem(ItemSO item, int amount = 1)
+        public void AddItem(ItemSO item, int amount = 1, bool playCollectSound = true)
         {
-            if (item == null || amount <= 0)
+            if (item == null || amount <= 0 || IsFull)
             {
-                return 0;
+                return;
             }
 
-            if (IsFull)
+            _itemQueue.Enqueue(new InventoryStack(item, amount));
+
+            if (!_isCollecting)
             {
-                return amount;
+                StartCoroutine(StaggeredItemCollection(playCollectSound));
             }
-
-            int remainingAmount = amount;
-            FillExistingStacks(item, ref remainingAmount);
-            FillEmptySlots(item, ref remainingAmount);
-
-            int amountAdded = amount - remainingAmount;
-            if (amountAdded > 0)
-            {
-                OnItemPickup?.Invoke(item, amountAdded);
-            }
-
-            if (remainingAmount < amount)
-            {
-                RefreshAfterInventoryChange();
-            }
-
-            return remainingAmount;
         }
 
-        public List<InventoryStack> AddItems(IEnumerable<InventoryStack> itemsToAdd)
+        private IEnumerator StaggeredItemCollection(bool playCollectSound)
         {
-            List<InventoryStack> leftOvers = new();
+            _isCollecting = true;
 
-            if (itemsToAdd == null)
+            while (_itemQueue.Count > 0)
             {
-                return leftOvers;
-            }
-
-            foreach (InventoryStack slotItem in itemsToAdd)
-            {
-                if (slotItem == null || slotItem.IsEmpty)
+                InventoryStack itemToCollect = _itemQueue.Dequeue();
+                
+                Add(itemToCollect);
+                if (playCollectSound)
                 {
-                    continue;
+                    // SoundManager.Instance.PlayOneShot(FMODEvents.Instance.ItemPickup, Player.Instance.transform.position);
                 }
 
-                int remainingAmount = AddItem(slotItem.Item, slotItem.Amount);
-                if (remainingAmount > 0)
+                string itemName = itemToCollect.Item.ItemName;
+                InventoryStack invItemToDisplay = new(itemToCollect.Item, itemToCollect.Amount);
+
+                // If there exists an item collect plate as the item being collected, delete it and spawn a new one
+                if (_itemPlates.ContainsKey(itemName))
                 {
-                    leftOvers.Add(new InventoryStack(slotItem.Item, remainingAmount));
+                    // Create refreshed item with updated quantities
+                    int currentQuantity = _itemPlates[itemName].DisplayAmount;
+                    int additionalQuantity = itemToCollect.Amount;
+
+                    invItemToDisplay.SetAmount(currentQuantity + additionalQuantity);
+
+                    // Delete the currently spawned item,
+                    Destroy(_itemPlates[itemName].gameObject);
+
+                    // Remove it from the dictionary
+                    _itemPlates.Remove(itemName);
                 }
+
+                SpawnItemCollectPlate(invItemToDisplay);
+
+                yield return new WaitForSeconds(_timeBetweenCollections);
             }
 
-            return leftOvers;
+            _isCollecting = false;
+        }
+
+        private void SpawnItemCollectPlate(InventoryStack itemToCollect)
+        {
+            string itemName = itemToCollect.Item.ItemName;
+            ItemCollectWorldUI itemPlate = Instantiate(_itemCollectPlatePrefab, Player.Instance.transform.position, Quaternion.identity);
+            itemPlate.DisplayedItem = itemToCollect;
+            itemPlate.OnAnimationComplete += () =>
+            {
+                Destroy(itemPlate.gameObject);
+                _itemPlates.Remove(itemName);
+            };
+            _itemPlates.Add(itemName, itemPlate);
+        }
+
+        private void Add(InventoryStack stack)
+        {
+            int remainingAmount = stack.Amount;
+            FillExistingStacks(stack.Item, ref remainingAmount);
+            FillEmptySlots(stack.Item, ref remainingAmount);
+
+            int amountAdded = stack.Amount - remainingAmount;
+            if (amountAdded > 0)
+            {
+                OnItemPickup?.Invoke(stack.Item, amountAdded);
+            }
+
+            RefreshAfterInventoryChange();
         }
 
         public int RemoveItem(ItemSO item, int amount = 1)
@@ -335,32 +374,6 @@ namespace UntitledDungeonGame
             }
 
             return remainingAmount;
-        }
-
-        public List<InventoryStack> RemoveItems(IEnumerable<InventoryStack> itemsToRemove)
-        {
-            List<InventoryStack> leftOvers = new();
-
-            if (itemsToRemove == null)
-            {
-                return leftOvers;
-            }
-
-            foreach (InventoryStack slotItem in itemsToRemove)
-            {
-                if (slotItem == null || slotItem.IsEmpty)
-                {
-                    continue;
-                }
-
-                int remainingAmount = RemoveItem(slotItem.Item, slotItem.Amount);
-                if (remainingAmount > 0)
-                {
-                    leftOvers.Add(new InventoryStack(slotItem.Item, remainingAmount));
-                }
-            }
-
-            return leftOvers;
         }
 
         private void FillExistingStacks(ItemSO item, ref int remainingAmount)

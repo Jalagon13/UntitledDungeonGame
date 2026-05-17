@@ -18,3 +18,8 @@ MonoBehaviour:
   ResourcePrefab: {fileID: 2788707215068956213, guid: 9d2459d19b8084370acbed77a2f3d795, type: 3}
   Hardness: 1
   HarvestType: 2
+  Table:
+  - Item: {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
+    Min: 1
+    Max: 1
+    Chance: 100

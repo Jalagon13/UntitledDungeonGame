@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e421dc634c2304029aaccdcf6480e078, type: 3}
   m_Name: StickItemSO
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ItemSO
-  _itemName: Stick
-  _itemDescription: feels a lil sticky..
+  _itemName: Stone
+  _itemDescription: 
   _inventoryIcon: {fileID: 21300000, guid: e305d4ff6fcb66148a89b78f93cc03fa, type: 3}
+  _isStackable: 1

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UntitledDungeonGame
@@ -18,5 +19,8 @@ namespace UntitledDungeonGame
         public float Hardness = 1f;
         [Tooltip("Which tool is needed to harvest")]
         public ToolType HarvestType;
+
+        [Tooltip("Loot table for items dropped by this resource")]
+        public List<Loot> Table = new();
     }
 }

@@ -1709,6 +1709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c36268cc9e5d4074aa46e64d5bd00ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.GameManager
+  _itemBasePrefab: {fileID: 4976966994841218345, guid: 1a9261989f58c4554bd3ab7212d38a20, type: 3}
 --- !u!114 &1760391181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1726,6 +1727,8 @@ MonoBehaviour:
   _hotbarSlotCount: 8
   _startingSelectedHotbarSlotIndex: 0
   _inventoryStackMax: 9999
+  _itemCollectPlatePrefab: {fileID: 2893883857882228170, guid: 97583e12174a6488193592c120954140, type: 3}
+  _timeBetweenCollections: 0.1
   _initialDelay: 0.25
   _delayBetweenItemsGiven: 0.2
   _startingItems:
@@ -1761,6 +1764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.MiningManager
   _miningRange: 3
+  _timeBetweenMiningSounds: 0.225
   _resourceLayer:
     serializedVersion: 2
     m_Bits: 8
