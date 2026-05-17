@@ -82,6 +82,12 @@ namespace UntitledDungeonGame
 
         private void OnPrimaryActionStarted(object sender, InputAction.CallbackContext e)
         {
+            if(_currentTool == null) 
+            {
+                _miningState = MiningState.Idle;
+                return;
+            }
+        
             MiningState newState = (e.started || e.performed) ? MiningState.Detecting : MiningState.Idle;
 
             if (_miningState == newState) return;

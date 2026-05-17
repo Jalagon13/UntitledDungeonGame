@@ -55,11 +55,6 @@ namespace UntitledDungeonGame
 
         private void OnDestroy()
         {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
-
             _playerInput.Player.PrimaryAction.started -= PlayerInput_OnPrimaryAction;
             _playerInput.Player.PrimaryAction.performed -= PlayerInput_OnPrimaryAction;
             _playerInput.Player.PrimaryAction.canceled -= PlayerInput_OnPrimaryAction;

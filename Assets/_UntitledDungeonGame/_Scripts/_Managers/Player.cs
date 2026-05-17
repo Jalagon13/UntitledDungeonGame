@@ -23,11 +23,16 @@ namespace UntitledDungeonGame
         public PlayerArmController PlayerArmController => _playerArmController;
 
         public NetworkVariable<ushort> SelectedItemID { get; private set; } = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        
+        
+        private CapsuleCollider2D _playerCollider;
+        public CapsuleCollider2D PlayerCollider => _playerCollider;
 
         private void Awake()
         {
             _character = GetComponent<ServerCharacter>();
             _playerArmController = GetComponent<PlayerArmController>();
+            _playerCollider = GetComponent<CapsuleCollider2D>();
         }
 
         public override void OnDestroy()

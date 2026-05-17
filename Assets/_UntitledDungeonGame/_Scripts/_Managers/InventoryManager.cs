@@ -224,6 +224,23 @@ namespace UntitledDungeonGame
 
         #region Inventory Item Functions
 
+        public void SubtractOneFromHotbarSelectedSlot()
+        {
+            if (!IsValidSlotIndex(SelectedHotbarSlotIndex))
+            {
+                return;
+            }
+
+            InventoryStack selectedSlot = _slots[SelectedHotbarSlotIndex];
+            if (selectedSlot.IsEmpty)
+            {
+                return;
+            }
+
+            selectedSlot.RemoveAmount(1);
+            RefreshAfterInventoryChange();
+        }
+
         public void ClearSelectedSlotItem()
         {
             _slots[SelectedHotbarSlotIndex].Clear();

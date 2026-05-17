@@ -1737,6 +1737,8 @@ MonoBehaviour:
     _amount: 99
   - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
     _amount: 1
+  - _item: {fileID: 11400000, guid: 3671644d65a8440cc868925e7d038801, type: 2}
+    _amount: 1
 --- !u!114 &1760391182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1752,6 +1754,7 @@ MonoBehaviour:
   _itemData:
   - {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
   - {fileID: 11400000, guid: 4727d9483e36c4d5ebda6ada74ecee8a, type: 2}
+  - {fileID: 11400000, guid: 3671644d65a8440cc868925e7d038801, type: 2}
 --- !u!114 &1760391183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1781,6 +1784,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc3423fdb8144a32afde2d7c824c938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlacementManager
+  _placementRange: 2.5
+  _resourceLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _ghostColorValid: {r: 0, g: 1, b: 0, a: 0.59607846}
+  _ghostColorInvalid: {r: 1, g: 0, b: 0, a: 0.59607846}
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

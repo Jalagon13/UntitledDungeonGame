@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93bf914465f342ab93f4bac13f23695, type: 3}
+  m_Name: CraftingTableItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlaceableItemSO
+  _itemName: Crafting Table
+  _itemDescription: 
+  _inventoryIcon: {fileID: 21300000, guid: 0f7538ff15051d14c9a387d4773180bc, type: 3}
+  _isStackable: 1
+  <PlaceablePrefab>k__BackingField: {fileID: 2788707215068956213, guid: 9d2459d19b8084370acbed77a2f3d795, type: 3}

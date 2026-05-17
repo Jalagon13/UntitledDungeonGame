@@ -57,4 +57,10 @@ namespace UntitledDungeonGame
         Idle,
         Detecting
     }
+    
+    public enum PlacingState
+    {
+        Idle,
+        Placing
+    }
 }
