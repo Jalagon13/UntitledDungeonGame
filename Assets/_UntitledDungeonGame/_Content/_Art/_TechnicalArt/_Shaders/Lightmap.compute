@@ -1,14 +1,100 @@
-// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
 RWTexture2D<float4> Result;
+StructuredBuffer<float4> LightSources;
+StructuredBuffer<int> TileData;
+
+int Width;
+int Height;
+int NumLights;
+float OpenStepTransmittance;
+float BlockedStepTransmittance;
+float MinContributionCutoff;
+
+int GetTileIndex(int2 pixelCoord)
+{
+    return pixelCoord.y * Width + pixelCoord.x;
+}
+
+bool IsInBounds(int2 pixelCoord)
+{
+    return pixelCoord.x >= 0 && pixelCoord.x < Width && pixelCoord.y >= 0 && pixelCoord.y < Height;
+}
+
+float SampleTransmittance(int2 pixelCoord)
+{
+    if (!IsInBounds(pixelCoord))
+    {
+        return BlockedStepTransmittance;
+    }
+
+    return TileData[GetTileIndex(pixelCoord)] == 0
+        ? OpenStepTransmittance
+        : BlockedStepTransmittance;
+}
+
+float ComputeLightContribution(float4 lightData, float2 pixelCoord)
+{
+    float2 lightToPixel = pixelCoord - lightData.xy;
+    float distanceToLight = length(lightToPixel);
+    float lightRadius = max(lightData.w, 0.0001);
+
+    if (distanceToLight > lightRadius)
+    {
+        return 0.0;
+    }
+
+    float normalizedDistance = distanceToLight / lightRadius;
+    float baseLight = lightData.z * saturate(1.0 - normalizedDistance * normalizedDistance);
+
+    if (baseLight <= MinContributionCutoff)
+    {
+        return 0.0;
+    }
+
+    float maxAxisDistance = max(abs(lightToPixel.x), abs(lightToPixel.y));
+    int marchSteps = (int)ceil(maxAxisDistance);
+    float transmittance = 1.0;
+
+    if (marchSteps > 0)
+    {
+        float2 rayStep = lightToPixel / marchSteps;
+        float2 samplePosition = lightData.xy;
+
+        [loop]
+        for (int stepIndex = 0; stepIndex < marchSteps; stepIndex++)
+        {
+            samplePosition += rayStep;
+            int2 samplePixel = clamp((int2)round(samplePosition), int2(0, 0), int2(Width - 1, Height - 1));
+            transmittance *= SampleTransmittance(samplePixel);
+
+            if (baseLight * transmittance <= MinContributionCutoff)
+            {
+                return 0.0;
+            }
+        }
+    }
+
+    return baseLight * transmittance;
+}
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    // TODO: insert actual code here!
+    if (id.x >= Width || id.y >= Height)
+    {
+        return;
+    }
 
-    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+    float2 pixelCoord = float2(id.x, id.y);
+    float maxLight = 0.0;
+
+    [loop]
+    for (int lightIndex = 0; lightIndex < NumLights; lightIndex++)
+    {
+        maxLight = max(maxLight, ComputeLightContribution(LightSources[lightIndex], pixelCoord));
+    }
+
+    float darkness = 1.0 - saturate(maxLight);
+    Result[id.xy] = float4(0.0, 0.0, 0.0, darkness);
 }

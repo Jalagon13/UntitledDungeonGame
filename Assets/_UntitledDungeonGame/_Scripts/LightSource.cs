@@ -18,6 +18,7 @@ namespace UntitledDungeonGame
 
         private void OnEnable()
         {
+            Debug.Log($"{LightmapManager.Instance != null}");
             LightmapManager.Instance.RegisterLightSource(this);
         }
 

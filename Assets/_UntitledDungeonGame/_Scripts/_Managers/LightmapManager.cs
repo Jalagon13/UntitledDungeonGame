@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 namespace UntitledDungeonGame
@@ -22,6 +23,18 @@ namespace UntitledDungeonGame
 
         [SerializeField] 
         private bool _usePointFilter;
+        
+        [SerializeField]
+        private Tilemap _tilemap;
+
+        [SerializeField, Range(0.9f, 1f)]
+        private float _openStepTransmittance = 0.99f;
+
+        [SerializeField, Range(0f, 1f)]
+        private float _blockedStepTransmittance = 0.65f;
+
+        [SerializeField, Range(0f, 1f)]
+        private float _minContributionCutoff = 0.01f;
         
 
         
@@ -46,7 +59,7 @@ namespace UntitledDungeonGame
             if (!_lightSources.Contains(lightSource))
             {
                 _lightSources.Add(lightSource);
-
+                Debug.Log($"Light {lightSource.name} Registered");
                 UpdateLightmap();
             }
         }
@@ -56,13 +69,18 @@ namespace UntitledDungeonGame
             if (_lightSources.Contains(lightSource))
             {
                 _lightSources.Remove(lightSource);
-
+                Debug.Log($"Light {lightSource.name} DeRegistered");
                 UpdateLightmap();
             }
         }
         
         public void UpdateLightmap()
         {
+            if (!HasValidConfiguration() || !HasValidBounds())
+            {
+                return;
+            }
+            Debug.Log($"Updating Lightmap");
             UpdateOverlayRect();
             UpdateRenderTexture();
             DispatchComputeShader();
@@ -97,10 +115,19 @@ namespace UntitledDungeonGame
             int renderTextureWidth = (_maxLoadedTilePos.x - _minLoadedTilePos.x) * _lightmapScale;
             int renderTextureHeight = (_maxLoadedTilePos.y - _minLoadedTilePos.y) * _lightmapScale;
 
+            if (_lightmapRenderTexture != null &&
+                _lightmapRenderTexture.width == renderTextureWidth &&
+                _lightmapRenderTexture.height == renderTextureHeight &&
+                _lightmapRenderTexture.filterMode == (_usePointFilter ? FilterMode.Point : FilterMode.Bilinear))
+            {
+                return;
+            }
+
             // Release old render texture if it exists
             if (_lightmapRenderTexture != null)
             {
                 _lightmapRenderTexture.Release();
+                Destroy(_lightmapRenderTexture);
             }
 
             // Create a new render texture
@@ -108,6 +135,7 @@ namespace UntitledDungeonGame
             {
                 enableRandomWrite = true,
                 filterMode = _usePointFilter ? FilterMode.Point : FilterMode.Bilinear,
+                format = RenderTextureFormat.ARGB32,
             };
 
             _lightmapRenderTexture.Create();
@@ -115,47 +143,97 @@ namespace UntitledDungeonGame
 
         private void DispatchComputeShader()
         {
-            // int renderTextureWidth = _lightmapRenderTexture.width;
-            // int renderTextureHeight = _lightmapRenderTexture.height;
-            // int kernelIndex = _lightmapComputeShader.FindKernel("CSMain");
+            int renderTextureWidth = _lightmapRenderTexture.width;
+            int renderTextureHeight = _lightmapRenderTexture.height;
+            int kernelIndex = _lightmapComputeShader.FindKernel("CSMain");
 
-            // // Create a list to hold the light data for all light sources
-            // List<Vector4> lightSourceList = CreateLightSourceGPUData();
+            // Create a list to hold the light data for all light sources
+            List<Vector4> lightSourceList = CreateLightSourceGPUData();
+            Vector4[] lightSourceData = lightSourceList.Count > 0
+                ? lightSourceList.ToArray()
+                : new[] { Vector4.zero };
 
-            // // Create and set structured buffer for light sources if there are any
-            // ComputeBuffer lightSourceBuffer = new ComputeBuffer(lightSourceList.Count == 0 ? 1 : lightSourceList.Count, sizeof(float) * 4);
-            // lightSourceBuffer.SetData(lightSourceList.ToArray());
-            // _lightmapComputeShader.SetBuffer(kernelIndex, "LightSources", lightSourceBuffer);
+            // Set up the tile visibility array and compute buffer
+            TileVisibility[] tileVisibilityArray = new TileVisibility[renderTextureWidth * renderTextureHeight];
+            PopulateTileVisibilityArray(_minLoadedTilePos, _maxLoadedTilePos, _lightmapScale, tileVisibilityArray, renderTextureWidth);
 
-            // // Set up the tile visibility array and compute buffer
-            // TileVisibility[] tileVisibilityArray = new TileVisibility[renderTextureWidth * renderTextureHeight];
-            // PopulateTileVisibilityArray(_minLoadedTilePos, _maxLoadedTilePos, _lightmapScale, tileVisibilityArray, renderTextureWidth);
+            ComputeBuffer lightSourceBuffer = null;
+            ComputeBuffer tileDataBuffer = null;
 
-            // // Create and set the compute buffer for tile visibility
-            // ComputeBuffer tileDataBuffer = new ComputeBuffer(tileVisibilityArray.Length, sizeof(uint));
-            // tileDataBuffer.SetData(tileVisibilityArray);
-            // _lightmapComputeShader.SetBuffer(kernelIndex, "TileData", tileDataBuffer);
+            try
+            {
+                lightSourceBuffer = new ComputeBuffer(lightSourceData.Length, sizeof(float) * 4);
+                lightSourceBuffer.SetData(lightSourceData);
+                _lightmapComputeShader.SetBuffer(kernelIndex, "LightSources", lightSourceBuffer);
 
-            // // Set shader parameters
-            // _lightmapComputeShader.SetInt("Width", renderTextureWidth);
-            // _lightmapComputeShader.SetInt("Height", renderTextureHeight);
-            // _lightmapComputeShader.SetInt("OpaqueTileTolerance", _lightmapScale / 2);
-            // _lightmapComputeShader.SetInt("NumLights", lightSourceList.Count);
-            // _lightmapComputeShader.SetVector("BaseLight", GetBaseLight());
-            // // Set the output texture
-            // _lightmapComputeShader.SetTexture(kernelIndex, "Result", _lightmapRenderTexture);
+                tileDataBuffer = new ComputeBuffer(tileVisibilityArray.Length, sizeof(int));
+                tileDataBuffer.SetData(tileVisibilityArray);
+                _lightmapComputeShader.SetBuffer(kernelIndex, "TileData", tileDataBuffer);
 
-            // // Dispatch the compute shader
-            // int threadGroupsX = Mathf.CeilToInt((float)renderTextureWidth / 8f);
-            // int threadGroupsY = Mathf.CeilToInt((float)renderTextureHeight / 8f);
-            // _lightmapComputeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
+                // Set shader parameters
+                _lightmapComputeShader.SetInt("Width", renderTextureWidth);
+                _lightmapComputeShader.SetInt("Height", renderTextureHeight);
+                _lightmapComputeShader.SetInt("NumLights", lightSourceList.Count);
+                _lightmapComputeShader.SetFloat("OpenStepTransmittance", _openStepTransmittance);
+                _lightmapComputeShader.SetFloat("BlockedStepTransmittance", _blockedStepTransmittance);
+                _lightmapComputeShader.SetFloat("MinContributionCutoff", _minContributionCutoff);
 
-            // // Release buffers after use
-            // tileDataBuffer.Release();
-            // lightSourceBuffer.Release();
+                // Set the output texture
+                _lightmapComputeShader.SetTexture(kernelIndex, "Result", _lightmapRenderTexture);
 
-            // // Set the texture on the RawImage component
-            // _lightMapRawImage.texture = _lightmapRenderTexture;
+                // Dispatch the compute shader
+                int threadGroupsX = Mathf.CeilToInt((float)renderTextureWidth / 8f);
+                int threadGroupsY = Mathf.CeilToInt((float)renderTextureHeight / 8f);
+                _lightmapComputeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
+            }
+            finally
+            {
+                tileDataBuffer?.Release();
+                lightSourceBuffer?.Release();
+            }
+
+            // Set the texture on the RawImage component
+            _lightMapRawImage.texture = _lightmapRenderTexture;
+        }
+
+        private void PopulateTileVisibilityArray(Vector2Int minLoadedTilePos, Vector2Int maxLoadedTilePos, int lightmapScale, TileVisibility[] tileVisibilityArray, int renderTextureWidth)
+        {
+            Dictionary<Vector3Int, TileVisibility> localVisibilityDict = new();
+
+            // Build local visibility dictionary for the tiles on screen
+            for (int x = minLoadedTilePos.x; x < maxLoadedTilePos.x; x++)
+            {
+                for (int y = minLoadedTilePos.y; y < maxLoadedTilePos.y; y++)
+                {
+                    Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                    localVisibilityDict[tilePosition] = new TileVisibility(_tilemap.HasTile(tilePosition) ? 0 : 1);
+                }
+            }
+
+            // For future implementation: loop through all the resources on screen and add them to the local visibilitydict but for now just tilemap is fine for testing
+
+
+            // Finally build the tile visiblity data for the gpu
+            foreach (var kvp in localVisibilityDict)
+            {
+                Vector3Int tilePosition = kvp.Key;
+                TileVisibility visibility = kvp.Value;
+
+                int relativeX = (tilePosition.x - minLoadedTilePos.x) * lightmapScale;
+                int relativeY = (tilePosition.y - minLoadedTilePos.y) * lightmapScale;
+
+                for (int y = 0; y < lightmapScale; y++)
+                {
+                    for (int x = 0; x < lightmapScale; x++)
+                    {
+                        int index = (relativeY + y) * renderTextureWidth + (relativeX + x);
+                        if (index >= 0 && index < tileVisibilityArray.Length)
+                        {
+                            tileVisibilityArray[index] = visibility;
+                        }
+                    }
+                }
+            }
         }
 
         private List<Vector4> CreateLightSourceGPUData()
@@ -165,11 +243,22 @@ namespace UntitledDungeonGame
             // Iterate over all light sources and populate the lightSourceList
             foreach (var lightSource in _lightSources)
             {
+                float lightRadiusWorld = lightSource.LightRadius;
+                Vector3 lightWorldPosition = lightSource.transform.position;
+
+                if (lightWorldPosition.x + lightRadiusWorld < _minLoadedTilePos.x ||
+                    lightWorldPosition.x - lightRadiusWorld > _maxLoadedTilePos.x ||
+                    lightWorldPosition.y + lightRadiusWorld < _minLoadedTilePos.y ||
+                    lightWorldPosition.y - lightRadiusWorld > _maxLoadedTilePos.y)
+                {
+                    continue;
+                }
+
                 // Convert world position to texture coordinates
-                Vector2 worldPosition = new Vector2(lightSource.transform.position.x, lightSource.transform.position.y);
+                Vector2 worldPosition = new Vector2(lightWorldPosition.x, lightWorldPosition.y);
                 Vector2 lightTextureCoord = WorldToRenderTextureCoords(worldPosition);
 
-                // Adjust light radius based on the lightmap scale (invert the scale to keep the radius consistent in world space)
+                // Adjust light radius to texture-space pixels.
                 float adjustedLightRadius = lightSource.LightRadius * _lightmapScale;
 
                 // Create light data (x, y position, intensity, adjusted radius)
@@ -192,10 +281,24 @@ namespace UntitledDungeonGame
             Vector2 renderTextureCoord = new Vector2(x * _lightmapRenderTexture.width, y * _lightmapRenderTexture.height);
 
             // Snap to the nearest pixel
-            renderTextureCoord.x = Mathf.Round(renderTextureCoord.x);
-            renderTextureCoord.y = Mathf.Round(renderTextureCoord.y);
+            renderTextureCoord.x = Mathf.Clamp(Mathf.Round(renderTextureCoord.x), 0, _lightmapRenderTexture.width - 1);
+            renderTextureCoord.y = Mathf.Clamp(Mathf.Round(renderTextureCoord.y), 0, _lightmapRenderTexture.height - 1);
 
             return renderTextureCoord;
+        }
+
+        private bool HasValidConfiguration()
+        {
+            return _lightmapComputeShader != null &&
+                   _lightMapRawImage != null &&
+                   _tilemap != null &&
+                   _lightmapScale > 0;
+        }
+
+        private bool HasValidBounds()
+        {
+            return _maxLoadedTilePos.x > _minLoadedTilePos.x &&
+                   _maxLoadedTilePos.y > _minLoadedTilePos.y;
         }
 
     }

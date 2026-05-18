@@ -1980,7 +1980,11 @@ MonoBehaviour:
   _lightmapComputeShader: {fileID: 7200000, guid: c7d71dfdc13d1498a872fd6d49713442, type: 3}
   _lightMapRawImage: {fileID: 560987984}
   _lightmapScale: 8
-  _usePointFilter: 0
+  _usePointFilter: 1
+  _tilemap: {fileID: 2039596632}
+  _openStepTransmittance: 0.95
+  _blockedStepTransmittance: 0.65
+  _minContributionCutoff: 0.01
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0

@@ -63,4 +63,14 @@ namespace UntitledDungeonGame
         Idle,
         Placing
     }
+
+    public struct TileVisibility
+    {
+        public int Visibility; // 0 = transparent, 1 = opaque
+
+        public TileVisibility(int visibility)
+        {
+            Visibility = visibility;
+        }
+    }
 }
