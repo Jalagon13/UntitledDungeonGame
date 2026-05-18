@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - ItemNamePlate
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: WorldAssets
     uniqueID: 1931392465
+    locked: 0
+  - name: Lightmap
+    uniqueID: 794534947
     locked: 0
   m_RenderingLayers:
   - Default

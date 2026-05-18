@@ -80,14 +80,9 @@ namespace UntitledDungeonGame
             {
                 _cachedMinCorner = currentMin;
                 _cachedMaxCorner = currentMax;
-                OnFrustumBoundsChanged();
+                
+                LightmapManager.Instance.UpdateLightMapBounds(_cachedMinCorner, _cachedMaxCorner);
             }
-        }
-
-        private void OnFrustumBoundsChanged()
-        {
-            // TODO: Implement logic when camera bounds change
-            // Lightmap.Instance.UpdateLightMapBounds(_cachedMinCorner, _cachedMaxCorner);
         }
 
         private void RegisterCameraToPlayer(ulong clientId)
