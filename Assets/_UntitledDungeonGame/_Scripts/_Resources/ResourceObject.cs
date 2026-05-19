@@ -24,5 +24,10 @@ namespace UntitledDungeonGame
             Debug.Log($"Item spawn logic local to resource object");
             LootTable.SpawnLoot(_resourceData.Table, _dropPoint.transform.position);
         }
+        
+        public virtual void OnGhostSpawn()
+        {
+            
+        }
     }
 }

@@ -97,7 +97,8 @@ namespace UntitledDungeonGame
 
                 _ghostPlaceableGameObject = Instantiate(_currentPlaceable.PlaceablePrefab.gameObject);
                 _ghostPlaceableGameObject.name = $"Ghost_{_ghostPlaceableGameObject.name}";
-                
+                _ghostPlaceableGameObject.GetComponent<ResourceObject>().OnGhostSpawn();
+
                 // Set placeable ghost material here and disable any colliders
                 GhostifyPlaceable(_ghostColorInvalid);
 

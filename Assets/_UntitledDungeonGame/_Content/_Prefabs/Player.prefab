@@ -782,7 +782,6 @@ Transform:
   - {fileID: 4273721582200961487}
   - {fileID: 2662637307106457156}
   - {fileID: 3052035236414259425}
-  - {fileID: 9077030640206384996}
   m_Father: {fileID: 4937875723858935662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7738663476197840072
@@ -801,52 +800,6 @@ MonoBehaviour:
   _serverCharacter: {fileID: 1902777031516221210}
   _visuals: {fileID: 3919997590328884195}
   _colliderHolder: {fileID: 2573796652508098368}
---- !u!1 &7383650837853336236
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9077030640206384996}
-  - component: {fileID: 7524391177987035799}
-  m_Layer: 0
-  m_Name: LightTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9077030640206384996
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7383650837853336236}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 818794910293839067}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7524391177987035799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7383650837853336236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75c6d8b867e9543429cba9a84301cde8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.LightSource
-  <LightIntensity>k__BackingField: 1
-  <LightRadius>k__BackingField: 5
 --- !u!1 &8769432622025642449
 GameObject:
   m_ObjectHideFlags: 0

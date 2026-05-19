@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-
 
 namespace UntitledDungeonGame
 {
@@ -14,22 +12,35 @@ namespace UntitledDungeonGame
         private void Start()
         {
             _lastWorldPosition = transform.position;
+
+            if (LightmapManager.Instance != null)
+            {
+                LightmapManager.Instance.RegisterLightSource(this);
+            }
         }
 
         private void OnEnable()
         {
-            Debug.Log($"{LightmapManager.Instance != null}");
-            LightmapManager.Instance.RegisterLightSource(this);
+            if (LightmapManager.Instance != null)
+            {
+                LightmapManager.Instance.RegisterLightSource(this);
+            }
         }
 
         private void OnDisable()
         {
-            LightmapManager.Instance.DeregisterLightSource(this);
+            if (LightmapManager.Instance != null)
+            {
+                LightmapManager.Instance.DeregisterLightSource(this);
+            }
         }
 
         private void Update()
         {
-            if (LightmapManager.Instance.LightMapRenderTexture == null ) return;
+            if (LightmapManager.Instance == null)
+            {
+                return;
+            }
 
             float updateThreshold = 1f / LightmapManager.Instance.LightmapScale;
 

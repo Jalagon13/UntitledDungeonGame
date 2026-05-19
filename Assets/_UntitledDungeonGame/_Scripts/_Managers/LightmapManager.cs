@@ -8,82 +8,128 @@ namespace UntitledDungeonGame
 {
     public class LightmapManager : MonoBehaviour
     {
-        public static LightmapManager Instance { get; private set; }
+        private static readonly Vector2Int[] CardinalDirections =
+        {
+            new(1, 0),
+            new(-1, 0),
+            new(0, 1),
+            new(0, -1)
+        };
 
-        [SerializeField]
-        private ComputeShader _lightmapComputeShader;
+        private static readonly Vector2Int[] DiagonalDirections =
+        {
+            new(1, 1),
+            new(1, -1),
+            new(-1, 1),
+            new(-1, -1)
+        };
+
+        private struct PropagationNode
+        {
+            public int X;
+            public int Y;
+            public float Transmittance;
+
+            public PropagationNode(int x, int y, float transmittance)
+            {
+                X = x;
+                Y = y;
+                Transmittance = transmittance;
+            }
+        }
+
+        public static LightmapManager Instance { get; private set; }
 
         [SerializeField]
         private RawImage _lightMapRawImage;
 
-        [SerializeField] 
-        private int _lightmapScale = 1;
+        [SerializeField, Min(1)]
+        private int _lightmapScale = 8;
         public int LightmapScale => _lightmapScale;
-        
 
-        [SerializeField] 
+        [SerializeField]
         private bool _usePointFilter;
-        
+
         [SerializeField]
         private Tilemap _tilemap;
 
-        [SerializeField, Range(0.9f, 1f)]
-        private float _openStepTransmittance = 0.99f;
+        [SerializeField, Range(0f, 1f)]
+        private float _ambientLight;
 
         [SerializeField, Range(0f, 1f)]
-        private float _blockedStepTransmittance = 0.65f;
+        private float _blockedCellTransmittance = 0.45f;
 
         [SerializeField, Range(0f, 1f)]
-        private float _minContributionCutoff = 0.01f;
-        
+        private float _minLightThreshold = 0.02f;
 
-        
-        private RenderTexture _lightmapRenderTexture;
-        public RenderTexture LightMapRenderTexture => _lightmapRenderTexture;
-        
+        [SerializeField, Range(0, 4)]
+        private int _blurPasses = 1;
+
+        [SerializeField, Range(0f, 1f)]
+        private float _blurStrength = 0.6f;
+
+        [SerializeField, Range(0.1f, 2f)]
+        private float _darknessStrength = 1f;
+
+        private Texture2D _lightmapTexture;
+        public Texture2D LightmapTexture => _lightmapTexture;
+
         private RectTransform _overlayRect;
         private Vector2Int _minLoadedTilePos;
         private Vector2Int _maxLoadedTilePos;
+        private Vector2Int _gridSize;
+        private readonly List<LightSource> _lightSources = new();
 
-        private List<LightSource> _lightSources = new List<LightSource>();
+        private readonly Queue<PropagationNode> _propagationQueue = new();
+
+        private TileVisibility[] _tileVisibilityGrid;
+        private float[] _lightGrid;
+        private float[] _workingLightGrid;
+        private float[] _lightSourceWorkingGrid;
+        private Color32[] _pixelBuffer;
 
         private void Awake()
         {
             Instance = this;
 
-            _overlayRect = _lightMapRawImage.rectTransform;
+            if (_lightMapRawImage != null)
+            {
+                _overlayRect = _lightMapRawImage.rectTransform;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+
+            if (_lightmapTexture != null)
+            {
+                Destroy(_lightmapTexture);
+            }
         }
 
         public void RegisterLightSource(LightSource lightSource)
         {
-            if (!_lightSources.Contains(lightSource))
+            if (lightSource == null || _lightSources.Contains(lightSource))
             {
-                _lightSources.Add(lightSource);
-                Debug.Log($"Light {lightSource.name} Registered");
-                UpdateLightmap();
+                return;
             }
+
+            _lightSources.Add(lightSource);
+            UpdateLightmap();
         }
 
         public void DeregisterLightSource(LightSource lightSource)
         {
-            if (_lightSources.Contains(lightSource))
-            {
-                _lightSources.Remove(lightSource);
-                Debug.Log($"Light {lightSource.name} DeRegistered");
-                UpdateLightmap();
-            }
-        }
-        
-        public void UpdateLightmap()
-        {
-            if (!HasValidConfiguration() || !HasValidBounds())
+            if (lightSource == null || !_lightSources.Remove(lightSource))
             {
                 return;
             }
-            Debug.Log($"Updating Lightmap");
-            UpdateOverlayRect();
-            UpdateRenderTexture();
-            DispatchComputeShader();
+
+            UpdateLightmap();
         }
 
         public void UpdateLightMapBounds(Vector2Int minLoadedTilePos, Vector2Int maxLoadedTilePos)
@@ -94,203 +140,308 @@ namespace UntitledDungeonGame
             UpdateLightmap();
         }
 
-        private void UpdateOverlayRect()
+        public void UpdateLightmap()
         {
-            // Convert tile positions to world space
-            Vector2 minWorldPos = new Vector2(_minLoadedTilePos.x, _minLoadedTilePos.y);
-            Vector2 maxWorldPos = new Vector2(_maxLoadedTilePos.x, _maxLoadedTilePos.y);
-
-            // Calculate center and size in world space
-            Vector2 centerWorldPos = (minWorldPos + maxWorldPos) / 2; // Center of the overlay
-            Vector2 sizeWorld = new Vector2(maxWorldPos.x - minWorldPos.x, maxWorldPos.y - minWorldPos.y);
-
-            // Update the RectTransform
-            _overlayRect.position = centerWorldPos; // Center position in world space
-            _overlayRect.sizeDelta = sizeWorld; // Set the scaled size in world units
-            _overlayRect.localScale = Vector3.one; // Keep scale uniform
-        }
-
-        private void UpdateRenderTexture()
-        {
-            int renderTextureWidth = (_maxLoadedTilePos.x - _minLoadedTilePos.x) * _lightmapScale;
-            int renderTextureHeight = (_maxLoadedTilePos.y - _minLoadedTilePos.y) * _lightmapScale;
-
-            if (_lightmapRenderTexture != null &&
-                _lightmapRenderTexture.width == renderTextureWidth &&
-                _lightmapRenderTexture.height == renderTextureHeight &&
-                _lightmapRenderTexture.filterMode == (_usePointFilter ? FilterMode.Point : FilterMode.Bilinear))
+            if (!HasValidConfiguration() || !HasValidBounds())
             {
                 return;
             }
 
-            // Release old render texture if it exists
-            if (_lightmapRenderTexture != null)
+            _gridSize = _maxLoadedTilePos - _minLoadedTilePos;
+
+            UpdateOverlayRect();
+            EnsureWorkingBuffers();
+            BuildVisibilityGrid();
+            SimulateLighting();
+            ApplyBlurIfNeeded();
+            RasterizeLightmap();
+        }
+
+        private void UpdateOverlayRect()
+        {
+            Vector2 minWorldPos = new(_minLoadedTilePos.x, _minLoadedTilePos.y);
+            Vector2 maxWorldPos = new(_maxLoadedTilePos.x, _maxLoadedTilePos.y);
+            Vector2 centerWorldPos = (minWorldPos + maxWorldPos) * 0.5f;
+            Vector2 sizeWorld = maxWorldPos - minWorldPos;
+
+            _overlayRect.position = centerWorldPos;
+            _overlayRect.sizeDelta = sizeWorld;
+            _overlayRect.localScale = Vector3.one;
+        }
+
+        private void EnsureWorkingBuffers()
+        {
+            int cellCount = _gridSize.x * _gridSize.y;
+            int textureWidth = _gridSize.x * _lightmapScale;
+            int textureHeight = _gridSize.y * _lightmapScale;
+
+            if (_tileVisibilityGrid == null || _tileVisibilityGrid.Length != cellCount)
             {
-                _lightmapRenderTexture.Release();
-                Destroy(_lightmapRenderTexture);
+                _tileVisibilityGrid = new TileVisibility[cellCount];
+                _lightGrid = new float[cellCount];
+                _workingLightGrid = new float[cellCount];
+                _lightSourceWorkingGrid = new float[cellCount];
             }
 
-            // Create a new render texture
-            _lightmapRenderTexture = new RenderTexture(renderTextureWidth, renderTextureHeight, 1)
+            if (_pixelBuffer == null || _pixelBuffer.Length != textureWidth * textureHeight)
             {
-                enableRandomWrite = true,
-                filterMode = _usePointFilter ? FilterMode.Point : FilterMode.Bilinear,
-                format = RenderTextureFormat.ARGB32,
+                _pixelBuffer = new Color32[textureWidth * textureHeight];
+            }
+
+            FilterMode filterMode = _usePointFilter ? FilterMode.Point : FilterMode.Bilinear;
+            if (_lightmapTexture != null &&
+                _lightmapTexture.width == textureWidth &&
+                _lightmapTexture.height == textureHeight &&
+                _lightmapTexture.filterMode == filterMode)
+            {
+                return;
+            }
+
+            if (_lightmapTexture != null)
+            {
+                Destroy(_lightmapTexture);
+            }
+
+            _lightmapTexture = new Texture2D(textureWidth, textureHeight, TextureFormat.RGBA32, false)
+            {
+                wrapMode = TextureWrapMode.Clamp,
+                filterMode = filterMode
             };
 
-            _lightmapRenderTexture.Create();
+            _lightMapRawImage.texture = _lightmapTexture;
         }
 
-        private void DispatchComputeShader()
+        private void BuildVisibilityGrid()
         {
-            int renderTextureWidth = _lightmapRenderTexture.width;
-            int renderTextureHeight = _lightmapRenderTexture.height;
-            int kernelIndex = _lightmapComputeShader.FindKernel("CSMain");
-
-            // Create a list to hold the light data for all light sources
-            List<Vector4> lightSourceList = CreateLightSourceGPUData();
-            Vector4[] lightSourceData = lightSourceList.Count > 0
-                ? lightSourceList.ToArray()
-                : new[] { Vector4.zero };
-
-            // Set up the tile visibility array and compute buffer
-            TileVisibility[] tileVisibilityArray = new TileVisibility[renderTextureWidth * renderTextureHeight];
-            PopulateTileVisibilityArray(_minLoadedTilePos, _maxLoadedTilePos, _lightmapScale, tileVisibilityArray, renderTextureWidth);
-
-            ComputeBuffer lightSourceBuffer = null;
-            ComputeBuffer tileDataBuffer = null;
-
-            try
+            for (int y = 0; y < _gridSize.y; y++)
             {
-                lightSourceBuffer = new ComputeBuffer(lightSourceData.Length, sizeof(float) * 4);
-                lightSourceBuffer.SetData(lightSourceData);
-                _lightmapComputeShader.SetBuffer(kernelIndex, "LightSources", lightSourceBuffer);
-
-                tileDataBuffer = new ComputeBuffer(tileVisibilityArray.Length, sizeof(int));
-                tileDataBuffer.SetData(tileVisibilityArray);
-                _lightmapComputeShader.SetBuffer(kernelIndex, "TileData", tileDataBuffer);
-
-                // Set shader parameters
-                _lightmapComputeShader.SetInt("Width", renderTextureWidth);
-                _lightmapComputeShader.SetInt("Height", renderTextureHeight);
-                _lightmapComputeShader.SetInt("NumLights", lightSourceList.Count);
-                _lightmapComputeShader.SetFloat("OpenStepTransmittance", _openStepTransmittance);
-                _lightmapComputeShader.SetFloat("BlockedStepTransmittance", _blockedStepTransmittance);
-                _lightmapComputeShader.SetFloat("MinContributionCutoff", _minContributionCutoff);
-
-                // Set the output texture
-                _lightmapComputeShader.SetTexture(kernelIndex, "Result", _lightmapRenderTexture);
-
-                // Dispatch the compute shader
-                int threadGroupsX = Mathf.CeilToInt((float)renderTextureWidth / 8f);
-                int threadGroupsY = Mathf.CeilToInt((float)renderTextureHeight / 8f);
-                _lightmapComputeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
-            }
-            finally
-            {
-                tileDataBuffer?.Release();
-                lightSourceBuffer?.Release();
-            }
-
-            // Set the texture on the RawImage component
-            _lightMapRawImage.texture = _lightmapRenderTexture;
-        }
-
-        private void PopulateTileVisibilityArray(Vector2Int minLoadedTilePos, Vector2Int maxLoadedTilePos, int lightmapScale, TileVisibility[] tileVisibilityArray, int renderTextureWidth)
-        {
-            Dictionary<Vector3Int, TileVisibility> localVisibilityDict = new();
-
-            // Build local visibility dictionary for the tiles on screen
-            for (int x = minLoadedTilePos.x; x < maxLoadedTilePos.x; x++)
-            {
-                for (int y = minLoadedTilePos.y; y < maxLoadedTilePos.y; y++)
+                for (int x = 0; x < _gridSize.x; x++)
                 {
-                    Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                    localVisibilityDict[tilePosition] = new TileVisibility(_tilemap.HasTile(tilePosition) ? 0 : 1);
-                }
-            }
-
-            // For future implementation: loop through all the resources on screen and add them to the local visibilitydict but for now just tilemap is fine for testing
-
-
-            // Finally build the tile visiblity data for the gpu
-            foreach (var kvp in localVisibilityDict)
-            {
-                Vector3Int tilePosition = kvp.Key;
-                TileVisibility visibility = kvp.Value;
-
-                int relativeX = (tilePosition.x - minLoadedTilePos.x) * lightmapScale;
-                int relativeY = (tilePosition.y - minLoadedTilePos.y) * lightmapScale;
-
-                for (int y = 0; y < lightmapScale; y++)
-                {
-                    for (int x = 0; x < lightmapScale; x++)
-                    {
-                        int index = (relativeY + y) * renderTextureWidth + (relativeX + x);
-                        if (index >= 0 && index < tileVisibilityArray.Length)
-                        {
-                            tileVisibilityArray[index] = visibility;
-                        }
-                    }
+                    Vector3Int tilePosition = new(_minLoadedTilePos.x + x, _minLoadedTilePos.y + y, 0);
+                    _tileVisibilityGrid[GridIndex(x, y)] = new TileVisibility(_tilemap.HasTile(tilePosition) ? 0 : 1);
                 }
             }
         }
 
-        private List<Vector4> CreateLightSourceGPUData()
+        private void SimulateLighting()
         {
-            List<Vector4> lightSourceList = new List<Vector4>();
+            Array.Fill(_lightGrid, _ambientLight);
 
-            // Iterate over all light sources and populate the lightSourceList
-            foreach (var lightSource in _lightSources)
+            foreach (LightSource lightSource in _lightSources)
             {
-                float lightRadiusWorld = lightSource.LightRadius;
-                Vector3 lightWorldPosition = lightSource.transform.position;
-
-                if (lightWorldPosition.x + lightRadiusWorld < _minLoadedTilePos.x ||
-                    lightWorldPosition.x - lightRadiusWorld > _maxLoadedTilePos.x ||
-                    lightWorldPosition.y + lightRadiusWorld < _minLoadedTilePos.y ||
-                    lightWorldPosition.y - lightRadiusWorld > _maxLoadedTilePos.y)
+                if (lightSource == null || !lightSource.isActiveAndEnabled)
                 {
                     continue;
                 }
 
-                // Convert world position to texture coordinates
-                Vector2 worldPosition = new Vector2(lightWorldPosition.x, lightWorldPosition.y);
-                Vector2 lightTextureCoord = WorldToRenderTextureCoords(worldPosition);
-
-                // Adjust light radius to texture-space pixels.
-                float adjustedLightRadius = lightSource.LightRadius * _lightmapScale;
-
-                // Create light data (x, y position, intensity, adjusted radius)
-                Vector4 lightData = new Vector4(lightTextureCoord.x, lightTextureCoord.y, lightSource.LightIntensity, adjustedLightRadius);
-
-                // Add to the list
-                lightSourceList.Add(lightData);
+                PropagateSingleLight(lightSource);
             }
-
-            return lightSourceList;
         }
 
-        public Vector2 WorldToRenderTextureCoords(Vector2 worldPos)
+        private void PropagateSingleLight(LightSource lightSource)
         {
-            // Normalize to render texture coordinates
-            float x = (worldPos.x - _minLoadedTilePos.x) / (_maxLoadedTilePos.x - _minLoadedTilePos.x);
-            float y = (worldPos.y - _minLoadedTilePos.y) / (_maxLoadedTilePos.y - _minLoadedTilePos.y);
+            Array.Fill(_lightSourceWorkingGrid, 0f);
+            _propagationQueue.Clear();
 
-            // Scale to render texture dimensions
-            Vector2 renderTextureCoord = new Vector2(x * _lightmapRenderTexture.width, y * _lightmapRenderTexture.height);
+            Vector2 localSourcePosition = new(
+                lightSource.transform.position.x - _minLoadedTilePos.x,
+                lightSource.transform.position.y - _minLoadedTilePos.y);
 
-            // Snap to the nearest pixel
-            renderTextureCoord.x = Mathf.Clamp(Mathf.Round(renderTextureCoord.x), 0, _lightmapRenderTexture.width - 1);
-            renderTextureCoord.y = Mathf.Clamp(Mathf.Round(renderTextureCoord.y), 0, _lightmapRenderTexture.height - 1);
+            int startX = Mathf.Clamp(Mathf.RoundToInt(localSourcePosition.x), 0, _gridSize.x - 1);
+            int startY = Mathf.Clamp(Mathf.RoundToInt(localSourcePosition.y), 0, _gridSize.y - 1);
+            int startIndex = GridIndex(startX, startY);
 
-            return renderTextureCoord;
+            float startLight = Mathf.Max(_ambientLight, lightSource.LightIntensity);
+            _lightSourceWorkingGrid[startIndex] = startLight;
+            _lightGrid[startIndex] = Mathf.Max(_lightGrid[startIndex], startLight);
+            _propagationQueue.Enqueue(new PropagationNode(startX, startY, 1f));
+
+            while (_propagationQueue.Count > 0)
+            {
+                PropagationNode currentNode = _propagationQueue.Dequeue();
+
+                PropagateToNeighbors(lightSource, localSourcePosition, currentNode, CardinalDirections);
+
+                // if (_allowDiagonalPropagation)
+                // {
+                //     PropagateToNeighbors(lightSource, localSourcePosition, currentNode, DiagonalDirections);
+                // }
+            }
+        }
+
+        private void PropagateToNeighbors(
+            LightSource lightSource,
+            Vector2 localSourcePosition,
+            PropagationNode currentNode,
+            IReadOnlyList<Vector2Int> directions)
+        {
+            for (int i = 0; i < directions.Count; i++)
+            {
+                Vector2Int direction = directions[i];
+                int nextX = currentNode.X + direction.x;
+                int nextY = currentNode.Y + direction.y;
+
+                if (!IsInsideGrid(nextX, nextY))
+                {
+                    continue;
+                }
+
+                float distanceToSource = Vector2.Distance(localSourcePosition, new Vector2(nextX, nextY));
+                if (distanceToSource > lightSource.LightRadius)
+                {
+                    continue;
+                }
+
+                float pathTransmittance = currentNode.Transmittance;
+                if (IsBlocked(nextX, nextY))
+                {
+                    pathTransmittance *= _blockedCellTransmittance;
+                }
+
+                float candidateLight = CalculateDistanceFalloff(lightSource, distanceToSource) * pathTransmittance;
+                if (candidateLight <= _minLightThreshold)
+                {
+                    continue;
+                }
+
+                int nextIndex = GridIndex(nextX, nextY);
+                if (candidateLight <= _lightSourceWorkingGrid[nextIndex])
+                {
+                    continue;
+                }
+
+                _lightSourceWorkingGrid[nextIndex] = candidateLight;
+                _lightGrid[nextIndex] = Mathf.Max(_lightGrid[nextIndex], candidateLight);
+                _propagationQueue.Enqueue(new PropagationNode(nextX, nextY, pathTransmittance));
+            }
+        }
+
+        private void ApplyBlurIfNeeded()
+        {
+            if (_blurPasses <= 0 || _blurStrength <= 0f)
+            {
+                return;
+            }
+
+            float[] source = _lightGrid;
+            float[] destination = _workingLightGrid;
+
+            for (int pass = 0; pass < _blurPasses; pass++)
+            {
+                for (int y = 0; y < _gridSize.y; y++)
+                {
+                    for (int x = 0; x < _gridSize.x; x++)
+                    {
+                        int index = GridIndex(x, y);
+                        float sum = source[index];
+                        int sampleCount = 1;
+
+                        for (int offsetY = -1; offsetY <= 1; offsetY++)
+                        {
+                            for (int offsetX = -1; offsetX <= 1; offsetX++)
+                            {
+                                if (offsetX == 0 && offsetY == 0)
+                                {
+                                    continue;
+                                }
+
+                                int sampleX = x + offsetX;
+                                int sampleY = y + offsetY;
+                                if (!IsInsideGrid(sampleX, sampleY))
+                                {
+                                    continue;
+                                }
+
+                                sum += source[GridIndex(sampleX, sampleY)];
+                                sampleCount++;
+                            }
+                        }
+
+                        float blurredValue = sum / sampleCount;
+                        destination[index] = Mathf.Lerp(source[index], blurredValue, _blurStrength);
+                    }
+                }
+
+                (source, destination) = (destination, source);
+            }
+
+            if (!ReferenceEquals(source, _lightGrid))
+            {
+                Array.Copy(source, _lightGrid, _lightGrid.Length);
+            }
+        }
+
+        private void RasterizeLightmap()
+        {
+            int textureWidth = _lightmapTexture.width;
+            int textureHeight = _lightmapTexture.height;
+
+            for (int pixelY = 0; pixelY < textureHeight; pixelY++)
+            {
+                float sampleY = (pixelY + 0.5f) / _lightmapScale - 0.5f;
+
+                for (int pixelX = 0; pixelX < textureWidth; pixelX++)
+                {
+                    float sampleX = (pixelX + 0.5f) / _lightmapScale - 0.5f;
+                    float lightValue = SampleLightBilinear(sampleX, sampleY);
+                    float darkness = Mathf.Clamp01((1f - lightValue) * _darknessStrength);
+                    byte alpha = (byte)Mathf.RoundToInt(darkness * byte.MaxValue);
+                    _pixelBuffer[pixelY * textureWidth + pixelX] = new Color32(0, 0, 0, alpha);
+                }
+            }
+
+            _lightmapTexture.SetPixels32(_pixelBuffer);
+            _lightmapTexture.Apply(false, false);
+            _lightMapRawImage.texture = _lightmapTexture;
+        }
+
+        private float SampleLightBilinear(float x, float y)
+        {
+            float clampedX = Mathf.Clamp(x, 0f, _gridSize.x - 1f);
+            float clampedY = Mathf.Clamp(y, 0f, _gridSize.y - 1f);
+
+            int x0 = Mathf.FloorToInt(clampedX);
+            int y0 = Mathf.FloorToInt(clampedY);
+            int x1 = Mathf.Min(x0 + 1, _gridSize.x - 1);
+            int y1 = Mathf.Min(y0 + 1, _gridSize.y - 1);
+
+            float tx = clampedX - x0;
+            float ty = clampedY - y0;
+
+            float bottomLeft = _lightGrid[GridIndex(x0, y0)];
+            float bottomRight = _lightGrid[GridIndex(x1, y0)];
+            float topLeft = _lightGrid[GridIndex(x0, y1)];
+            float topRight = _lightGrid[GridIndex(x1, y1)];
+
+            float bottom = Mathf.Lerp(bottomLeft, bottomRight, tx);
+            float top = Mathf.Lerp(topLeft, topRight, tx);
+            return Mathf.Clamp01(Mathf.Lerp(bottom, top, ty));
+        }
+
+        private float CalculateDistanceFalloff(LightSource lightSource, float distanceToSource)
+        {
+            float normalizedDistance = distanceToSource / Mathf.Max(lightSource.LightRadius, 0.0001f);
+            return lightSource.LightIntensity * Mathf.Clamp01(1f - normalizedDistance * normalizedDistance);
+        }
+
+        private int GridIndex(int x, int y)
+        {
+            return y * _gridSize.x + x;
+        }
+
+        private bool IsInsideGrid(int x, int y)
+        {
+            return x >= 0 && x < _gridSize.x && y >= 0 && y < _gridSize.y;
+        }
+
+        private bool IsBlocked(int x, int y)
+        {
+            return _tileVisibilityGrid[GridIndex(x, y)].Visibility == 1;
         }
 
         private bool HasValidConfiguration()
         {
-            return _lightmapComputeShader != null &&
-                   _lightMapRawImage != null &&
+            return _lightMapRawImage != null &&
                    _tilemap != null &&
                    _lightmapScale > 0;
         }
@@ -300,6 +451,5 @@ namespace UntitledDungeonGame
             return _maxLoadedTilePos.x > _minLoadedTilePos.x &&
                    _maxLoadedTilePos.y > _minLoadedTilePos.y;
         }
-
     }
 }

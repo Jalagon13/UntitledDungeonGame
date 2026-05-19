@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d93bf914465f342ab93f4bac13f23695, type: 3}
-  m_Name: CraftingTableItemSO
+  m_Name: TorchItemSO
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlaceableItemSO
-  _itemName: Crafting Table
+  _itemName: Torch
   _itemDescription: 
-  _inventoryIcon: {fileID: 21300000, guid: 0f7538ff15051d14c9a387d4773180bc, type: 3}
+  _inventoryIcon: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
   _isStackable: 1
-  <PlaceablePrefab>k__BackingField: {fileID: 2788707215068956213, guid: 9d2459d19b8084370acbed77a2f3d795, type: 3}
+  <PlaceablePrefab>k__BackingField: {fileID: 1577918824766189025, guid: 7777d0f959b7b42f5ab076d9ccd23a28, type: 3}

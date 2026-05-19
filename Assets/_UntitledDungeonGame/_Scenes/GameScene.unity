@@ -1913,7 +1913,7 @@ MonoBehaviour:
   - _item: {fileID: 11400000, guid: 4e49fa6e933c841f88089d97a3d91f17, type: 2}
     _amount: 1
   - _item: {fileID: 11400000, guid: 3671644d65a8440cc868925e7d038801, type: 2}
-    _amount: 5
+    _amount: 999
 --- !u!114 &1760391182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1977,14 +1977,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1785f39e49894dd7806c8a48dfde633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.LightmapManager
-  _lightmapComputeShader: {fileID: 7200000, guid: c7d71dfdc13d1498a872fd6d49713442, type: 3}
   _lightMapRawImage: {fileID: 560987984}
-  _lightmapScale: 8
+  _lightmapScale: 1
   _usePointFilter: 1
   _tilemap: {fileID: 2039596632}
-  _openStepTransmittance: 0.95
-  _blockedStepTransmittance: 0.65
-  _minContributionCutoff: 0.01
+  _ambientLight: 0
+  _blockedCellTransmittance: 0
+  _minLightThreshold: 0.005
+  _blurPasses: 4
+  _blurStrength: 0.803
+  _darknessStrength: 1
 --- !u!1 &1814972416
 GameObject:
   m_ObjectHideFlags: 0
