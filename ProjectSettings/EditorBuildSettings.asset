@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/DeepSeaGame/Scenes/GameScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/_UntitledDeepSeaGame/_Scenes/New Scene.unity
     guid: f4e14a0cee61e4d99942774d8ea3c51a
   m_configObjects:

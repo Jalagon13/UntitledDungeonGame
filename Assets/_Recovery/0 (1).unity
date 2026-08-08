@@ -3095,7 +3095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 828880607
+  GlobalObjectIdHash: 224647712
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3718,7 +3718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3660877605
+  GlobalObjectIdHash: 3133208899
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -7804,7 +7804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 293770351
+  GlobalObjectIdHash: 3373088004
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -8524,6 +8524,18 @@ MonoBehaviour:
     _amount: 1
   - _item: {fileID: 11400000, guid: 42acfbff19ca9494db1baf89b103e5f2, type: 2}
     _amount: 1
+  - _item: {fileID: 11400000, guid: 0a7059e9f544d492aa2eb68fafb553dd, type: 2}
+    _amount: 1
+  - _item: {fileID: 11400000, guid: acf564ddef5f048c2881f98cfabacc6a, type: 2}
+    _amount: 123
+  - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
+    _amount: 123
+  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 123
+  - _item: {fileID: 11400000, guid: e790a77e72e634b2d8d6194167b5d628, type: 2}
+    _amount: 1233
+  - _item: {fileID: 11400000, guid: 872faf2990f25472a90687e2e71efa6f, type: 2}
+    _amount: 12
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0
