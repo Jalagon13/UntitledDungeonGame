@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b8e6d3b40e20741cca5a7bd39a9178af
+guid: 3f978520e046d44e19678e7caa77f706
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639218027342656980
+  platformSettingsDirtyTick: 639218024135925200
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TX_Player
+  - name: Test
     originalName: 
-    pivot: {x: 0.54545456, y: -0.04347826}
+    pivot: {x: 1, y: -0.045454547}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 11
-      height: 23
-    spriteID: eac4e5f1332f0407dace4cb1db840af3
+      width: 16
+      height: 22
+    spriteID: 1077b210708944dc5a0b003f6aba1f3f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,7 +149,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: TX_Player_0
+  - name: dih
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 7
@@ -160,8 +160,8 @@ ScriptedImporter:
       x: 0
       y: 0
       width: 16
-      height: 24
-    spriteID: 3c4d5548b766d4f83be3121e7b4182bd
+      height: 22
+    spriteID: c530f861f59df45fd841357c5b620811
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -174,25 +174,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3386135862
+      value0: 3423762534
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TX_Player
+    name: Test
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Player
+    - name: Test
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
         x: 0
-        y: 4
-        width: 16
-        height: 19
-      spriteId: eac4e5f1332f0407dace4cb1db840af3
+        y: 0
+        width: 96
+        height: 80
+      spriteId: 1077b210708944dc5a0b003f6aba1f3f
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -238,5 +238,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 16, y: 32}
-  previousTextureSize: {x: 16, y: 32}
+  canvasSize: {x: 96, y: 80}
+  previousTextureSize: {x: 128, y: 128}
