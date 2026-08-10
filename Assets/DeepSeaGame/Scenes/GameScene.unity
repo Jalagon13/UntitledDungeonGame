@@ -9064,6 +9064,8 @@ MonoBehaviour:
     _amount: 1234
   - _item: {fileID: 11400000, guid: 732818d52957f47fdaa3b0abbfcd70d6, type: 2}
     _amount: 12
+  - _item: {fileID: 11400000, guid: 218a772feb7894441bacda6cd907ea89, type: 2}
+    _amount: 123
 --- !u!114 &1794183287
 MonoBehaviour:
   m_ObjectHideFlags: 0
