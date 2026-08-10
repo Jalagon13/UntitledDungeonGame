@@ -20,6 +20,7 @@ namespace DeepSeaGame
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
         public event EventHandler<InputAction.CallbackContext> OnInteract;
         public event EventHandler<InputAction.CallbackContext> OnPlaceLightSource;
+        public event EventHandler<InputAction.CallbackContext> OnTogglePauseMenu;
 
         private bool _isGameplayInputBlocked, _primaryHeldDown, _secondaryHeldDown, _jumpHeldDown;
 
@@ -70,6 +71,7 @@ namespace DeepSeaGame
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
             _playerInput.UI.ToggleInventory.started += GameInput_OnToggleCraftingMenu;
+            _playerInput.UI.TogglePauseMenu.started += PlayerInput_OnTogglePauseMenu;
         }
 
         private void OnDestroy()
@@ -96,9 +98,15 @@ namespace DeepSeaGame
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
             _playerInput.UI.ToggleInventory.started -= GameInput_OnToggleCraftingMenu;
+            _playerInput.UI.TogglePauseMenu.started -= PlayerInput_OnTogglePauseMenu;
 
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnTogglePauseMenu(InputAction.CallbackContext context)
+        {
+            OnTogglePauseMenu?.Invoke(this, context);
         }
 
         private void PlayerInput_OnPlaceLightSource(InputAction.CallbackContext context)

@@ -500,6 +500,16 @@ namespace DeepSeaGame
                     ""interactions"": """",
                     ""initialStateCheck"": true,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""TogglePauseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e1592b1-c8b6-4f0a-9e11-8a996a35128e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -1030,6 +1040,17 @@ namespace DeepSeaGame
                     ""action"": ""SelectSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad99cf2f-a501-4dfb-ab15-20d513fad7ca"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1120,6 +1141,7 @@ namespace DeepSeaGame
             m_UI_ToggleInventory = m_UI.FindAction("ToggleInventory", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
             m_UI_SelectSlot = m_UI.FindAction("SelectSlot", throwIfNotFound: true);
+            m_UI_TogglePauseMenu = m_UI.FindAction("TogglePauseMenu", throwIfNotFound: true);
         }
 
         ~@PlayerInput()
@@ -1375,6 +1397,7 @@ namespace DeepSeaGame
         private readonly InputAction m_UI_ToggleInventory;
         private readonly InputAction m_UI_ScrollWheel;
         private readonly InputAction m_UI_SelectSlot;
+        private readonly InputAction m_UI_TogglePauseMenu;
         /// <summary>
         /// Provides access to input actions defined in input action map "UI".
         /// </summary>
@@ -1434,6 +1457,10 @@ namespace DeepSeaGame
             /// Provides access to the underlying input action "UI/SelectSlot".
             /// </summary>
             public InputAction @SelectSlot => m_Wrapper.m_UI_SelectSlot;
+            /// <summary>
+            /// Provides access to the underlying input action "UI/TogglePauseMenu".
+            /// </summary>
+            public InputAction @TogglePauseMenu => m_Wrapper.m_UI_TogglePauseMenu;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1496,6 +1523,9 @@ namespace DeepSeaGame
                 @SelectSlot.started += instance.OnSelectSlot;
                 @SelectSlot.performed += instance.OnSelectSlot;
                 @SelectSlot.canceled += instance.OnSelectSlot;
+                @TogglePauseMenu.started += instance.OnTogglePauseMenu;
+                @TogglePauseMenu.performed += instance.OnTogglePauseMenu;
+                @TogglePauseMenu.canceled += instance.OnTogglePauseMenu;
             }
 
             /// <summary>
@@ -1543,6 +1573,9 @@ namespace DeepSeaGame
                 @SelectSlot.started -= instance.OnSelectSlot;
                 @SelectSlot.performed -= instance.OnSelectSlot;
                 @SelectSlot.canceled -= instance.OnSelectSlot;
+                @TogglePauseMenu.started -= instance.OnTogglePauseMenu;
+                @TogglePauseMenu.performed -= instance.OnTogglePauseMenu;
+                @TogglePauseMenu.canceled -= instance.OnTogglePauseMenu;
             }
 
             /// <summary>
@@ -1789,6 +1822,13 @@ namespace DeepSeaGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSelectSlot(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "TogglePauseMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnTogglePauseMenu(InputAction.CallbackContext context);
         }
     }
 }

@@ -18,6 +18,9 @@ namespace DeepSeaGame
 
         private void Awake()
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
             if (_hostButton != null)
             {
                 _hostButton.onClick.AddListener(() =>
@@ -48,6 +51,8 @@ namespace DeepSeaGame
 
             _titleMenuMusicEventInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.TitleMusic);
             _titleMenuMusicEventInstance.start();
+
+            Time.timeScale = 1f;
         }
 
         private void OnDestroy()
