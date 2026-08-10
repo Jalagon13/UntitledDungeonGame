@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: db7c18519588b420ebbcea3c34d7625f
+guid: b8e6d3b40e20741cca5a7bd39a9178af
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -78,7 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 4
+    mosaicPadding: 2
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -93,7 +93,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 4
+    mosaicPadding: 2
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639205760738979950
+  platformSettingsDirtyTick: 639219436747767850
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TX_Jellyfish
+  - name: TX_Player
     originalName: 
-    pivot: {x: 1.0714287, y: 0}
+    pivot: {x: 0.54545456, y: -0.04347826}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 14
-      height: 17
-    spriteID: 44a304bbee4b84b2197f0bd1a1425e1f
+      width: 11
+      height: 23
+    spriteID: eac4e5f1332f0407dace4cb1db840af3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,19 +149,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: TX_Jellyfish_0
+  - name: TX_Player_0
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5, y: 0}
+    alignment: 7
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
-      width: 13
-      height: 16
-    spriteID: 2eafe99683f44463aa27c2692e3244bc
+      x: 0
+      y: 1
+      width: 16
+      height: 24
+    spriteID: 3c4d5548b766d4f83be3121e7b4182bd
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -174,25 +174,70 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 842098241
+      value0: 3386135862
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TX_Jellyfish
+    name: TX_Player
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Jellyfish
+    - name: Frame_0
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 1
+        x: 2
         y: 0
+        width: 12
+        height: 53
+      spriteId: eac4e5f1332f0407dace4cb1db840af3
+    - name: Frame_1
+      frameIndex: 1
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 1
+        width: 12
+        height: 52
+      spriteId: b2ed5c0c0d9b8446cbf4411f39f14f90
+    - name: Frame_2
+      frameIndex: 2
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 1
         width: 13
-        height: 16
-      spriteId: 44a304bbee4b84b2197f0bd1a1425e1f
+        height: 52
+      spriteId: bf32f101ff57740c3a39adc2b7346da9
+    - name: Frame_3
+      frameIndex: 3
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 0
+        width: 12
+        height: 53
+      spriteId: 26b7f53d90ba04fc68e65b819c1bc681
+    - name: Frame_4
+      frameIndex: 4
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 0
+        width: 12
+        height: 53
+      spriteId: 065d3532e1aba472eae6d788f1b33378
+    - name: Frame_5
+      frameIndex: 5
+      additiveSortOrder: 0
+      cellRect:
+        x: 2
+        y: 0
+        width: 12
+        height: 53
+      spriteId: 6ee06ea1a354c4186ba81a843367399b
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -238,5 +283,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
-  previousTextureSize: {x: 32, y: 32}
+  canvasSize: {x: 16, y: 64}
+  previousTextureSize: {x: 64, y: 128}

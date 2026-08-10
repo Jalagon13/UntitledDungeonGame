@@ -31,7 +31,7 @@ MonoBehaviour:
     Max: 1
     Chance: 100
   <IsMultiTile>k__BackingField: 1
-  <Size>k__BackingField: {x: 1, y: 3}
+  <Size>k__BackingField: {x: 1, y: 2}
   <Prefab>k__BackingField: {fileID: 2267720191521074369, guid: b6dc908c6c3334b249999b255b85ab14, type: 3}
   <Behavior>k__BackingField: {fileID: 0}
   <MiningSFX>k__BackingField:

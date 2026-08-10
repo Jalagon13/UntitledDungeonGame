@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1733515650
+  GlobalObjectIdHash: 1336743837
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -229,8 +229,8 @@ MonoBehaviour:
   _gravity: -50
   _playerVisuals: {fileID: 2662637307106457156}
   _visualRotationSpeed: 10
-  _airBodySize: {x: 1.8, y: 2.75}
-  _waterBodySize: {x: 1.8, y: 1.8}
+  _airBodySize: {x: 1.9, y: 1.9}
+  _waterBodySize: {x: 1.9, y: 1.9}
   _minJumpPower: 10
   _maxJumpPower: 17
   _maxJumpHoldTime: 0.2
@@ -451,9 +451,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.ServerSpriteAnimHandler
   ShowTopMostFoldoutHeaderGroup: 1
-  _animConfig:
-    SideMoveClip: {fileID: 7400000, guid: 83b6ce38a249f430c80be8129bbf4684, type: 2}
-    SideIdleClip: {fileID: 7400000, guid: 9b110df85b7ab41b1a0b657a572a1422, type: 2}
+  _swimMoveClip: {fileID: 7400000, guid: 83b6ce38a249f430c80be8129bbf4684, type: 2}
+  _swimIdleClip: {fileID: 7400000, guid: 9b110df85b7ab41b1a0b657a572a1422, type: 2}
+  _groundedIdleClip: {fileID: 7400000, guid: fe2e726f2410e420eb7f50c083ea8ebd, type: 2}
+  _groundedMoveClip: {fileID: 7400000, guid: 81302dbbdd6a24a65acb8ef4bf7d3c14, type: 2}
 --- !u!1 &534724065418897734
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +741,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1.5}
+  m_Offset: {x: 0, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}

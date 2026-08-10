@@ -10,8 +10,10 @@ namespace DeepSeaGame
 {
     public class ServerSpriteAnimHandler : NetworkBehaviour
     {
-        [SerializeField]
-        private AnimationConfigSO _animConfig;
+        [SerializeField] private AnimationClip _swimMoveClip;
+        [SerializeField] private AnimationClip _swimIdleClip;
+        [SerializeField] private AnimationClip _groundedIdleClip;
+        [SerializeField] private AnimationClip _groundedMoveClip;
 
         private ServerCharacter _serverCharacter;
         private Animator _animator;
@@ -27,14 +29,30 @@ namespace DeepSeaGame
             UpdateSpriteOrientationClientRpc(direction);
             AnimationClip clip = null;
 
-            if (movementState == MovementState.Idle)
+            if(_serverCharacter.StateMachineType == StateMachineType.Player)
             {
-                clip = _animConfig.SideIdleClip;
+                if (movementState == MovementState.Idle)
+                {
+                    clip = _serverCharacter.CurrentStatus.Value == Status.InWater ? _swimIdleClip : _groundedIdleClip;
+                }
+                else if (movementState == MovementState.Moving)
+                {
+                    clip = _serverCharacter.CurrentStatus.Value == Status.InWater ? _swimMoveClip : _groundedMoveClip;
+                }
             }
-            else if (movementState == MovementState.Pursuing || movementState == MovementState.Knockback || movementState == MovementState.Moving || movementState == MovementState.Fleeing)
+            else
             {
-                clip = _animConfig.SideMoveClip;
+                if (movementState == MovementState.Idle)
+                {
+                    clip = _swimIdleClip;
+                }
+                else if (movementState == MovementState.Moving || movementState == MovementState.Pursuing || movementState == MovementState.Knockback || movementState == MovementState.Fleeing)
+                {
+                    clip = _swimMoveClip;
+                }
             }
+
+            
 
             if (clip != null)
             {

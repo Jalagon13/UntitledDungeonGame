@@ -25,7 +25,8 @@ namespace DeepSeaGame
                 _networkHealthState.LifeState.OnValueChanged += OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged += PlayCurrentMoveState;
                 _serverCharacter.CurrentDirection.OnValueChanged += OnDirectionChanged;
-                
+                _serverCharacter.CurrentStatus.OnValueChanged += OnStatusChanged;
+
                 if (_serverCharacter.TryGetComponent(out Player player))
                 {
                     player.PlayerArmController.AimDirection.OnValueChanged += OnActionDirectionChanged;
@@ -41,12 +42,21 @@ namespace DeepSeaGame
                 _networkHealthState.LifeState.OnValueChanged -= OnLifeStateChanged;
                 _serverCharacter.MovementState.OnValueChanged -= PlayCurrentMoveState;
                 _serverCharacter.CurrentDirection.OnValueChanged -= OnDirectionChanged;
+                _serverCharacter.CurrentStatus.OnValueChanged -= OnStatusChanged;
                 
                 if (_serverCharacter.TryGetComponent(out Player player))
                 {
                     player.PlayerArmController.AimDirection.OnValueChanged -= OnActionDirectionChanged;
                     player.PlayerArmController.AimingStateChanged -= OnAimingStateChanged;
                 }
+            }
+        }
+
+        private void OnStatusChanged(Status previousValue, Status newValue)
+        {
+            foreach (ServerSpriteAnimHandler handler in _spriteAnimHandlers)
+            {
+                handler.PlayAnimation(_serverCharacter.MovementState.Value, GetAnimationDirection(_serverCharacter.CurrentDirection.Value));
             }
         }
 

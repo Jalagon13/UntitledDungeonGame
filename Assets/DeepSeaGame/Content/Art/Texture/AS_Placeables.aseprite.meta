@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b8e6d3b40e20741cca5a7bd39a9178af
+guid: 962ab9714c65b4d0da6abfb7030a4c18
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -78,7 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 2
+    mosaicPadding: 8
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -93,7 +93,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 2
+    mosaicPadding: 8
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639219436747767850
+  platformSettingsDirtyTick: 639195249085756670
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TX_Player
+  - name: TX_Hatch
     originalName: 
-    pivot: {x: 0.54545456, y: -0.04347826}
+    pivot: {x: 0.65000004, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 11
-      height: 23
-    spriteID: eac4e5f1332f0407dace4cb1db840af3
+      width: 40
+      height: 48
+    spriteID: 6703e9f4d2b4f437f9e0f7a1dacf5386
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,19 +149,103 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: TX_Player_0
+  - name: TX_Hatch_Closed
     originalName: 
     pivot: {x: 0.5, y: 0}
-    alignment: 7
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 0
-      y: 1
+      x: 8
+      y: 8
+      width: 8
+      height: 16
+    spriteID: c816e37914e79434e8e0fc93029f112a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Hatch_Open
+    originalName: 
+    pivot: {x: 0.25, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 20
+      y: 8
       width: 16
-      height: 24
-    spriteID: 3c4d5548b766d4f83be3121e7b4182bd
+      height: 16
+    spriteID: 27deb7504543540cd9d1bae28ad8fec0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_WaterDrain
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 6
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 36
+      y: 8
+      width: 16
+      height: 16
+    spriteID: 7debe36e4bcde4c24a71c8bdf0b4c574
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Radio
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 6
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 52
+      y: 8
+      width: 16
+      height: 16
+    spriteID: 35d0857933ed94b51bebfeabcad7142d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: TX_Workshop
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 6
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 52
+      y: 24
+      width: 16
+      height: 16
+    spriteID: 96a6fcaf79a7f4095a7d53ec63ae997b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -174,25 +258,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3386135862
+      value0: 4075846649
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TX_Player
+    name: TX_Hatch
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Player
+    - name: AS_Placeables
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 2
+        x: 4
         y: 0
-        width: 12
-        height: 21
-      spriteId: eac4e5f1332f0407dace4cb1db840af3
+        width: 59
+        height: 28
+      spriteId: 6703e9f4d2b4f437f9e0f7a1dacf5386
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -238,5 +322,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 16, y: 32}
-  previousTextureSize: {x: 16, y: 32}
+  canvasSize: {x: 64, y: 64}
+  previousTextureSize: {x: 128, y: 64}

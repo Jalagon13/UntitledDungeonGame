@@ -128,13 +128,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TX_PlayerSpriteSheet_0
+      name: TX_PlayerSwim1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 14
-        height: 23
+        x: 0
+        y: 32
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,111 +150,243 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX_PlayerSpriteSheet_1
+      name: TX_PlayerSwim2
       rect:
         serializedVersion: 2
-        x: 17
-        y: 1
-        width: 14
-        height: 23
+        x: 16
+        y: 32
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 69a387b9ccaa1d620800000000000000
-      internalID: 2797204639332186774
+      spriteID: 870305b0b99cc4543b3f3b926e6d8761
+      internalID: 838124642
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX_PlayerSpriteSheet_2
+      name: TX_PlayerSwim3
       rect:
         serializedVersion: 2
-        x: 33
-        y: 1
-        width: 14
-        height: 23
+        x: 32
+        y: 32
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 8d1d406cce1d2fa00800000000000000
-      internalID: 788923699607949784
+      spriteID: 6e73569e43c894424a7f381fb66a6790
+      internalID: 1770337941
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX_PlayerSpriteSheet_3
+      name: TX_PlayerSwim4
       rect:
         serializedVersion: 2
-        x: 49
-        y: 1
-        width: 14
-        height: 23
+        x: 48
+        y: 32
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f24a5020763c626a0800000000000000
-      internalID: -6474272567115537361
+      spriteID: e96e26ca5d4fb4d4da4d957406384ec0
+      internalID: 391258034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX_PlayerSpriteSheet_4
+      name: TX_PlayerSwim5
       rect:
         serializedVersion: 2
-        x: 65
-        y: 1
-        width: 14
-        height: 23
+        x: 64
+        y: 32
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c721ac263338d98b0800000000000000
-      internalID: -5143810942663257476
+      spriteID: a38f60bec769344719a9b96d679d85f7
+      internalID: -1863847283
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TX_PlayerSpriteSheet_5
+      name: TX_PlayerSwim6
       rect:
         serializedVersion: 2
-        x: 81
-        y: 1
-        width: 14
-        height: 23
+        x: 80
+        y: 32
+        width: 16
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6c5421810e5a2ab40800000000000000
-      internalID: 5450100880966829510
+      spriteID: 69d7879d0029640ccab638c41f2c9724
+      internalID: 1160929363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX_PlayerGrounded1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72ec28c65d1814f208f6265fcf3b6c81
+      internalID: 1343252386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX_PlayerGrounded2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b58634011a1b54e299f0b2cf1de0ac2f
+      internalID: -589128606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX_PlayerGrounded3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b9a3e748efd9480a846009689ea702b
+      internalID: 1965968991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX_PlayerGrounded4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d239367a72b140cd88ce16a6777000e
+      internalID: -1037709351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX_PlayerGrounded5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6f7fa313ba5f4dc690c560c977aca09
+      internalID: -1761635480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TX_PlayerGrounded6
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 645a458eb2d204a2aa01002d8f6869f2
+      internalID: -899616329
       vertices: []
       indices: 
       edges: []
@@ -271,14 +403,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      TX_PlayerSpriteSheet_0: -7900893991905917403
-      TX_PlayerSpriteSheet_1: 2797204639332186774
-      TX_PlayerSpriteSheet_2: 788923699607949784
-      TX_PlayerSpriteSheet_3: -6474272567115537361
-      TX_PlayerSpriteSheet_4: -5143810942663257476
-      TX_PlayerSpriteSheet_5: 5450100880966829510
+      TX_PlayerGrounded1: 1343252386
+      TX_PlayerGrounded2: -589128606
+      TX_PlayerGrounded3: 1965968991
+      TX_PlayerGrounded4: -1037709351
+      TX_PlayerGrounded5: -1761635480
+      TX_PlayerGrounded6: -899616329
+      TX_PlayerSwim1: -7900893991905917403
+      TX_PlayerSwim2: 838124642
+      TX_PlayerSwim3: 1770337941
+      TX_PlayerSwim4: 391258034
+      TX_PlayerSwim5: -1863847283
+      TX_PlayerSwim6: 1160929363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

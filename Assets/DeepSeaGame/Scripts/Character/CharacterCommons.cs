@@ -3,13 +3,6 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
-    [Serializable]
-    public class AnimationConfigSO
-    {
-        public AnimationClip SideMoveClip;
-        public AnimationClip SideIdleClip;
-    }
-    
     public enum Direction
     {
         None,

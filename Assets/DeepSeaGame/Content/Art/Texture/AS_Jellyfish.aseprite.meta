@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f808ecc7617114e75ba4fad147d14471
+guid: db7c18519588b420ebbcea3c34d7625f
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -78,7 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 0
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -93,7 +93,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 0
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639211834935248410
+  platformSettingsDirtyTick: 639205760738979950
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TX_Items
+  - name: TX_Jellyfish
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 1.0714287, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 64
-      height: 64
-    spriteID: afc9d9abe1926457e8abe143deb0adab
+      width: 14
+      height: 17
+    spriteID: 44a304bbee4b84b2197f0bd1a1425e1f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,7 +149,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: item_drill
+  - name: TX_Jellyfish_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -157,95 +157,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 0
-      y: 16
-      width: 16
+      x: 4
+      y: 4
+      width: 13
       height: 16
-    spriteID: 8fd720f52c7964c2da64e75cc7a633de
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: item_spear
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 16
-      y: 0
-      width: 32
-      height: 32
-    spriteID: 47a2f5d58d8cf41c39ebeca56cfa5127
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: item_kelp
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 48
-      y: 16
-      width: 16
-      height: 16
-    spriteID: 28c18fbe6ed754ce5877303bd92df892
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: item_stone_knife
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 48
-      y: 0
-      width: 16
-      height: 16
-    spriteID: 1b5343773db3648e38869c1901c8c352
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: item_iron_oxygen_tank
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 16
-      height: 16
-    spriteID: 531a7f22afb98473ea631d3835a0c804
+    spriteID: 2eafe99683f44463aa27c2692e3244bc
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -258,25 +174,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3451363137
+      value0: 842098241
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TX_Items
+    name: TX_Jellyfish
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TX_Items
+    - name: AS_Jellyfish
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 32
-        width: 64
-        height: 32
-      spriteId: afc9d9abe1926457e8abe143deb0adab
+        x: 1
+        y: 0
+        width: 13
+        height: 16
+      spriteId: 44a304bbee4b84b2197f0bd1a1425e1f
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -322,5 +238,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
-  previousTextureSize: {x: 64, y: 32}
+  canvasSize: {x: 32, y: 32}
+  previousTextureSize: {x: 32, y: 32}
