@@ -1,4 +1,4 @@
-Shader "UntitledDeepSeaGame/AirMaskStencilWrite"
+Shader "DeepSeaGame/AirMaskStencilWrite"
 {
     Properties
     {

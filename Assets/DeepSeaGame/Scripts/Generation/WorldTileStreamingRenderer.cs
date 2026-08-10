@@ -20,6 +20,7 @@ namespace DeepSeaGame
 
         [Header("Air Mask Rendering")]
         [SerializeField] private Material _airMaskStencilMaterial;
+        [SerializeField] private Shader _airShader;
         [SerializeField] private int _airMaskSortingOrder = 98;
 
         private void Start() 
@@ -89,14 +90,13 @@ namespace DeepSeaGame
         {
             if (_airMaskStencilMaterial == null)
             {
-                Shader shader = Shader.Find("UntitledDeepSeaGame/AirMaskStencilWrite");
-                if (shader == null)
+                if (_airShader == null)
                 {
                     Debug.LogWarning("Could not find UntitledDeepSeaGame/AirMaskStencilWrite. AirTilemap will render visibly instead of writing the ocean cutout stencil.");
                     return;
                 }
 
-                _airMaskStencilMaterial = new Material(shader)
+                _airMaskStencilMaterial = new Material(_airShader)
                 {
                     name = "Runtime Air Mask Stencil Write",
                     hideFlags = HideFlags.DontSave

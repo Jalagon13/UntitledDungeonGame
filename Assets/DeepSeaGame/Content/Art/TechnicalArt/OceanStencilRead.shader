@@ -1,4 +1,4 @@
-Shader "UntitledDeepSeaGame/OceanStencilRead"
+Shader "DeepSeaGame/OceanStencilRead"
 {
     Properties
     {

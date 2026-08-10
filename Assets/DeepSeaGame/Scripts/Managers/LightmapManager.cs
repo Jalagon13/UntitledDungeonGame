@@ -20,29 +20,24 @@ namespace DeepSeaGame
 
         [Header("Flashlight Settings")]
         [Tooltip("Controls how sharply the flashlight cone fades toward its edges. 1 = linear, 2+ = brighter core with sharper falloff.")]
-        [SerializeField] 
-        private float _coneEdgeFalloffPower = 2f;
+        [SerializeField] private float _coneEdgeFalloffPower = 2f;
 
         [Header("Texture Settings")]
         [Tooltip("How many light pixels per game tile. 1 = 1x1, 2 = 2x2, 4 = 4x4. Higher means less pixelated but more cost.")]
-        [SerializeField, Min(1)] 
-        private int _lightTilesPerGameTile = 1;
+        [SerializeField, Min(1)] private int _lightTilesPerGameTile = 1;
 
         [Tooltip("The filter mode for the lightmap overlay texture (Point for pixelated tiles, Bilinear for smooth).")]
-        [SerializeField] 
-        private FilterMode _lightmapFilterMode = FilterMode.Point;
+        [SerializeField] private FilterMode _lightmapFilterMode = FilterMode.Point;
 
         [Tooltip("Applies a CPU box blur to the lightmap to smooth out pixelation.")]
-        [SerializeField]
-        private bool _enableBlur = true;
+        [SerializeField] private bool _enableBlur = true;
 
         [Tooltip("Number of times to run the box blur. More passes = smoother light but higher CPU cost.")]
-        [SerializeField, Min(1)]
-        private int _blurPasses = 1;
+        [SerializeField, Min(1)] private int _blurPasses = 1;
 
-        [Header("Padding Settings")]
-        [Tooltip("Extra padding (in tiles) around the camera frustum for light calculations. Prevents lighting pop-in on screen edges.")]
+        [Header("Padding Settings"), Tooltip("Extra padding (in tiles) around the camera frustum for light calculations. Prevents lighting pop-in on screen edges.")]
         [SerializeField] private int _extraLightmapPadding = 8;
+        [SerializeField] private Shader _multiplyShader;
 
         // Cached runtime variables to completely eliminate GC garbage collection overhead
         private WorldDataStore _worldDataStore;
@@ -531,12 +526,7 @@ namespace DeepSeaGame
             _lightmapOverlay.texture = _lightmapTexture;
 
             // Assign multiply material or fall back to raw grayscale
-            Shader multiplyShader = Shader.Find("UI/MultiplyBlend");
-            if (multiplyShader == null)
-            {
-                Debug.LogError("Lightmap shader not found in build!");
-            }
-            _lightmapOverlay.material = new Material(multiplyShader);
+            _lightmapOverlay.material = new Material(_multiplyShader);
 
             UpdateOverlayRectTf(inflatedBounds);
         }

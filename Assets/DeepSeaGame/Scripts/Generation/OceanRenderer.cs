@@ -7,6 +7,7 @@ namespace DeepSeaGame
     {
         [SerializeField] private WorldGenerationData _worldGenerationData;
         [SerializeField] private Material _oceanStencilMaterial;
+        [SerializeField] private Shader _shader;
         [SerializeField] private Color _waterColor = new(0.05f, 0.42f, 0.72f, 0.5f);
         [SerializeField] private int _sortingOrder = 99;
 
@@ -57,14 +58,13 @@ namespace DeepSeaGame
         {
             if (_oceanStencilMaterial == null)
             {
-                Shader shader = Shader.Find("UntitledDeepSeaGame/OceanStencilRead");
-                if (shader == null)
+                if (_shader == null)
                 {
-                    Debug.LogWarning("Could not find UntitledDeepSeaGame/OceanStencilRead. Ocean will render without AirTilemap cutouts.");
+                    Debug.LogWarning("Could not find DeepSeaGame/OceanStencilRead. Ocean will render without AirTilemap cutouts.");
                     return;
                 }
 
-                _oceanStencilMaterial = new Material(shader)
+                _oceanStencilMaterial = new Material(_shader)
                 {
                     name = "Runtime Ocean Stencil Read",
                     hideFlags = HideFlags.DontSave

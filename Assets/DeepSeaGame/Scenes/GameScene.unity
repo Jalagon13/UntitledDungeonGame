@@ -4134,6 +4134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldTileStreamingRenderer
   _airMaskStencilMaterial: {fileID: 0}
+  _airShader: {fileID: 4800000, guid: da63a9370f83b4ff2add7ecc44267305, type: 3}
   _airMaskSortingOrder: 98
 --- !u!1 &890717787
 GameObject:
@@ -7705,7 +7706,7 @@ GameObject:
   - component: {fileID: 1760391180}
   - component: {fileID: 1760391182}
   m_Layer: 0
-  m_Name: LOCAL_MANAGERS
+  m_Name: GAME_MANAGERS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8952,6 +8953,7 @@ MonoBehaviour:
   _worldGenerationData: {fileID: 885515393}
   _surfaceHeight: 0.35
   _oceanStencilMaterial: {fileID: 0}
+  _shader: {fileID: 4800000, guid: 315a2e728ed2948e9939d9a21b4c2431, type: 3}
   _surfaceColor: {r: 0.55, g: 0.9, b: 1, a: 0.7}
   _sortingOrder: 100
 --- !u!212 &1827668789
@@ -9423,6 +9425,7 @@ MonoBehaviour:
   _enableBlur: 1
   _blurPasses: 1
   _extraLightmapPadding: 5
+  _multiplyShader: {fileID: 4800000, guid: e88818ed3402e402a937dadb52483b01, type: 3}
 --- !u!114 &1937983706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10570,6 +10573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.OceanRenderer
   _worldGenerationData: {fileID: 885515393}
   _oceanStencilMaterial: {fileID: 0}
+  _shader: {fileID: 4800000, guid: 315a2e728ed2948e9939d9a21b4c2431, type: 3}
   _waterColor: {r: 0.05, g: 0.42, b: 0.72, a: 0.5}
   _sortingOrder: 99
 --- !u!212 &2134409143
@@ -10622,7 +10626,7 @@ SpriteRenderer:
   m_SortingOrder: 99
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 0.4022784, g: 0.5945176, b: 0.754717, a: 0.30588236}
+  m_Color: {r: 0.011764706, g: 0.41960785, b: 0.72156864, a: 0.30588236}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
