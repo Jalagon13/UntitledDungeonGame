@@ -532,6 +532,10 @@ namespace DeepSeaGame
 
             // Assign multiply material or fall back to raw grayscale
             Shader multiplyShader = Shader.Find("UI/MultiplyBlend");
+            if (multiplyShader == null)
+            {
+                Debug.LogError("Lightmap shader not found in build!");
+            }
             _lightmapOverlay.material = new Material(multiplyShader);
 
             UpdateOverlayRectTf(inflatedBounds);

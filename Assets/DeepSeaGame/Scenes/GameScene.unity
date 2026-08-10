@@ -2526,7 +2526,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.82908, y: 24, z: 0}
+  m_LocalPosition: {x: 42.64943, y: 24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4116,7 +4116,7 @@ MonoBehaviour:
   _worldWidth: 256
   _worldHeight: 384
   _seaLevelY: 326
-  <Seed>k__BackingField: 123
+  <Seed>k__BackingField: 1234
   _defaultSeed: prototype-world
   <UndergroundMaxYLevel>k__BackingField: 250
   <UndergroundMinYLevel>k__BackingField: 0

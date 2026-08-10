@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 30836350533104256}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.33, y: 1.43, z: 0}
+  m_LocalPosition: {x: -0.378, y: 1.214, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -229,8 +229,8 @@ MonoBehaviour:
   _gravity: -50
   _playerVisuals: {fileID: 2662637307106457156}
   _visualRotationSpeed: 10
-  _airBodySize: {x: 1.75, y: 2.75}
-  _waterBodySize: {x: 1.75, y: 1.75}
+  _airBodySize: {x: 1.8, y: 2.75}
+  _waterBodySize: {x: 1.8, y: 1.8}
   _minJumpPower: 10
   _maxJumpPower: 17
   _maxJumpHoldTime: 0.2
@@ -408,7 +408,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -3286911535795820277, guid: 3f978520e046d44e19678e7caa77f706, type: 3}
+  m_Sprite: {fileID: 1532600905787525032, guid: b8e6d3b40e20741cca5a7bd39a9178af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -544,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 1224968750194530153}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 0, z: 0}
+  m_LocalPosition: {x: 0.125, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -750,7 +750,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.75, y: 1.75}
+  m_Size: {x: 1.8, y: 1.8}
   m_EdgeRadius: 0
 --- !u!1 &3919997590328884195
 GameObject:
@@ -858,7 +858,7 @@ Transform:
   m_GameObject: {fileID: 6734466772814568300}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.291, y: 1.433, z: 0}
+  m_LocalPosition: {x: 0.378, y: 1.217, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
