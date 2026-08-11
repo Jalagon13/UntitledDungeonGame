@@ -69,14 +69,14 @@ namespace DeepSeaGame
             }
 
             // Rotate player visuals so their y-axis points toward the velocity direction, lerping smoothly
-            Quaternion targetVisualRotation;
+            Quaternion targetVisualRotation = default;
             
             if (Player.Instance.Character.StateMachine.CurrentState.StateKey == AIState.Locomotion && _velocity.sqrMagnitude > 20f)
             {
                 Vector3 velocityDirection = new Vector3(_velocity.x, _velocity.y, 0f).normalized;
                 targetVisualRotation = Quaternion.FromToRotation(Vector3.up, velocityDirection);
             }
-            else
+            else if(Player.Instance.Character.StateMachine.CurrentState.StateKey != AIState.Locomotion)
             {
                 targetVisualRotation = Quaternion.identity;
             }
