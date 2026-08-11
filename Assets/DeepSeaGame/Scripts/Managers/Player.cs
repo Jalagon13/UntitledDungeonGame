@@ -25,9 +25,6 @@ namespace DeepSeaGame
         private PlayerArmController _playerArmController;
         public PlayerArmController PlayerArmController => _playerArmController;
         
-        private PlayerOxygenController _playerOxygenController;
-        public PlayerOxygenController PlayerOxygenController => _playerOxygenController;
-
         private FlashlightController _flashlightController;
         public FlashlightController FlashlightController => _flashlightController;
 
@@ -41,7 +38,6 @@ namespace DeepSeaGame
         {
             _character = GetComponent<ServerCharacter>();
             _playerArmController = GetComponent<PlayerArmController>();
-            _playerOxygenController = GetComponent<PlayerOxygenController>();
             _flashlightController = GetComponent<FlashlightController>();
         }
 
@@ -147,7 +143,6 @@ namespace DeepSeaGame
             transform.SetPositionAndRotation(SpawnPoint, Quaternion.identity);
             StartCoroutine(_character.StartIFrameTimer());
             _character.DamageReceiver.ReceiveHP(_character, _character.RuntimeStats.MaxHealth.GetValue(), false);
-            _playerOxygenController.OnRespawn();
         }
     }
 }
