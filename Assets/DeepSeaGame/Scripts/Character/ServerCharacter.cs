@@ -35,6 +35,8 @@ namespace DeepSeaGame
             get => NetHealthState.LifeState.Value;
             private set => NetHealthState.LifeState.Value = value;
         }
+        
+        // public BuffHandler BuffHandler { get; private set; }
 
         private CharacterStats _characterStats;
         public CharacterStats RuntimeStats => _characterStats;
