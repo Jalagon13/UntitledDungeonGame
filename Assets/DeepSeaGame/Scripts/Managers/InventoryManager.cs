@@ -328,6 +328,19 @@ namespace DeepSeaGame
             _isCollecting = false;
         }
 
+        private void SpawnItemCollectPlate(InventoryStack itemToCollect)
+        {
+            string itemName = itemToCollect.Item.InGameName;
+            ItemCollectWorldUI itemPlate = Instantiate(_itemCollectPlatePrefab, Player.Instance.transform.position, Quaternion.identity);
+            itemPlate.DisplayedItem = itemToCollect;
+            itemPlate.OnAnimationComplete += () =>
+            {
+                Destroy(itemPlate.gameObject);
+                _itemPlates.Remove(itemName);
+            };
+            _itemPlates.Add(itemName, itemPlate);
+        }
+
         private void Add(InventoryStack stack)
         {
             int remainingAmount = stack.Amount;
@@ -392,19 +405,6 @@ namespace DeepSeaGame
                 slot.Set(item, amountToAdd);
                 remainingAmount -= amountToAdd;
             }
-        }
-
-        private void SpawnItemCollectPlate(InventoryStack itemToCollect)
-        {
-            string itemName = itemToCollect.Item.InGameName;
-            ItemCollectWorldUI itemPlate = Instantiate(_itemCollectPlatePrefab, Player.Instance.transform.position, Quaternion.identity);
-            itemPlate.DisplayedItem = itemToCollect;
-            itemPlate.OnAnimationComplete += () =>
-            {
-                Destroy(itemPlate.gameObject);
-                _itemPlates.Remove(itemName);
-            };
-            _itemPlates.Add(itemName, itemPlate);
         }
 
         public int RemoveItem(ItemSO item, int amount = 1)
