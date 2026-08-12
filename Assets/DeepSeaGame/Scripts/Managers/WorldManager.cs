@@ -18,8 +18,6 @@ namespace DeepSeaGame
         public event Action OnWorldReady;
 
         [Header("Ocean Visuals")]
-        [SerializeField] private OceanRenderer _oceanRenderer;
-        [SerializeField] private OceanSurfaceRenderer _oceanSurfaceRenderer;
         [SerializeField] private ParallaxLayer _undergroundLayer;
 
         private WorldGenerationData _worldGenerationData;
@@ -71,8 +69,6 @@ namespace DeepSeaGame
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             Player.Instance.SpawnPoint = spawnPosition;
             
-            _oceanRenderer.Initialize(_worldGenerationData);
-            _oceanSurfaceRenderer.Initialize(_worldGenerationData);
             _undergroundLayer.Initialize(_worldGenerationData);
 
             IsWorldReady = true;

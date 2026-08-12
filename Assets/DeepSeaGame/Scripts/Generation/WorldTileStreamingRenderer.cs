@@ -18,10 +18,6 @@ namespace DeepSeaGame
         private bool _hasRenderedBounds;
         private Dictionary<Vector2Int, GameObject> _spawnedMultiTileObjects = new();
 
-        [Header("Air Mask Rendering")]
-        [SerializeField] private Material _airMaskStencilMaterial;
-        [SerializeField] private Shader _airShader;
-        [SerializeField] private int _airMaskSortingOrder = 98;
 
         private void Start() 
         {
@@ -64,8 +60,6 @@ namespace DeepSeaGame
                 return;
             }
 
-            ConfigureAirMaskRenderer();
-
             _worldDataStore.TileChanged += HandleTileChanged;
             _worldDataStore.MultiTileChanged += HandleMultiTileChanged;
             
@@ -84,27 +78,6 @@ namespace DeepSeaGame
             {
                 HandleVisibleTileBoundsChanged(PlayerCamera.Instance.CurrentVisibleTileBounds);
             }
-        }
-
-        private void ConfigureAirMaskRenderer()
-        {
-            if (_airMaskStencilMaterial == null)
-            {
-                if (_airShader == null)
-                {
-                    Debug.LogWarning("Could not find UntitledDeepSeaGame/AirMaskStencilWrite. AirTilemap will render visibly instead of writing the ocean cutout stencil.");
-                    return;
-                }
-
-                _airMaskStencilMaterial = new Material(_airShader)
-                {
-                    name = "Runtime Air Mask Stencil Write",
-                    hideFlags = HideFlags.DontSave
-                };
-            }
-
-            _airTilemapRenderer.sharedMaterial = _airMaskStencilMaterial;
-            _airTilemapRenderer.sortingOrder = _airMaskSortingOrder;
         }
 
         private void HandleMultiTileChanged(Vector2Int anchorPosition, TileSO multiTile, bool isPlacingMultiTile, bool flipX)
