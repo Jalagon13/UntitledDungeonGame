@@ -39,7 +39,8 @@ namespace DeepSeaGame
         private void Recalculate()
         {
             int flat = 0;
-            float percent = 1f;
+            // Percent modifiers are treated as multipliers. Example: 1.5 = 150%, 0.5 = 50%.
+            float multiplier = 1f;
 
             foreach (var modifier in _modifiers)
             {
@@ -49,11 +50,11 @@ namespace DeepSeaGame
                 }
                 else if (modifier.Type == StatModifierType.Percent)
                 {
-                    percent += modifier.Value;
+                    multiplier *= modifier.Value;
                 }
             }
 
-            _finalValue = Mathf.RoundToInt((_baseAmount + flat) * percent);
+            _finalValue = Mathf.RoundToInt((_baseAmount + flat) * multiplier);
             _dirty = false;
         }
     }

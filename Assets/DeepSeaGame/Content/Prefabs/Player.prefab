@@ -49,9 +49,8 @@ GameObject:
   - component: {fileID: 1902777031516221210}
   - component: {fileID: 8316067687826058288}
   - component: {fileID: 7146354698580210200}
-  - component: {fileID: 5720560256968510660}
-  - component: {fileID: 534220837259839922}
   - component: {fileID: 2797800751685443813}
+  - component: {fileID: 5720560256968510660}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -114,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1733515650
+  GlobalObjectIdHash: 1336743837
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -143,6 +142,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _playerCollider: {fileID: 7189654115469789931}
   SpawnPoint: {x: 0, y: 0}
+  _inAirHealthBuffSO: {fileID: 11400000, guid: fe98b48c0dae64841be454ba727ebefd, type: 2}
+  _inWaterHealthBuffSO: {fileID: 11400000, guid: 2343c463301a44d239102b0c5034e349, type: 2}
 --- !u!114 &8924049036358242053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,40 +252,6 @@ MonoBehaviour:
   _networkHealthState: {fileID: 8924049036358242053}
   _spriteAnimHandlers:
   - {fileID: 6435305078094566520}
---- !u!114 &5720560256968510660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120328430538976818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3937f7ad47995458f89f717443e7bc8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlayerArmController
-  ShowTopMostFoldoutHeaderGroup: 1
-  _heldItemPivot: {fileID: 8769432622025642449}
-  _heldItemHolder: {fileID: 1224968750194530153}
-  _rightPivot: {fileID: 2121108582731336343}
-  _leftPivot: {fileID: 3394721781645054817}
---- !u!114 &534220837259839922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120328430538976818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4926fc23b5697480cbb07ce86a6f0308, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.PlayerOxygenController
-  ShowTopMostFoldoutHeaderGroup: 1
-  _playerSO: {fileID: 11400000, guid: 35e29877e5d7b4898a9983d40cf7874b, type: 2}
-  _headPoint: {fileID: 409362107588107734}
-  _firstOxygenWarningThreshold: 0.25
-  _secondOxygenWarningThreshold: 0.1
 --- !u!114 &2797800751685443813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,6 +269,23 @@ MonoBehaviour:
   _flashlightRange: 20
   _recalcAngleThreshold: 3
   _recalcPositionThreshold: 0.15
+--- !u!114 &5720560256968510660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120328430538976818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3937f7ad47995458f89f717443e7bc8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.PlayerArmController
+  ShowTopMostFoldoutHeaderGroup: 1
+  _heldItemPivot: {fileID: 8769432622025642449}
+  _heldItemHolder: {fileID: 1224968750194530153}
+  _rightPivot: {fileID: 2121108582731336343}
+  _leftPivot: {fileID: 3394721781645054817}
 --- !u!1 &298901437459232130
 GameObject:
   m_ObjectHideFlags: 0

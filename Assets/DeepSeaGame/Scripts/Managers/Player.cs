@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace DeepSeaGame
 {
-    [RequireComponent(typeof(ServerCharacter), typeof(PlayerArmController))]
+    [RequireComponent(typeof(ServerCharacter))]
     public class Player : NetworkBehaviour
     {
         public static Player Instance { get; private set; }
@@ -34,6 +34,10 @@ namespace DeepSeaGame
         [HideInInspector]
         public Vector2 SpawnPoint;
         
+        [Header("Buffs")]
+        [SerializeField] private BuffSO _inAirHealthBuffSO;
+        [SerializeField] private BuffSO _inWaterHealthBuffSO;
+
         private Buff _inAirHeathBuff;
         private Buff _inWaterHealthBuff;
 
@@ -43,8 +47,9 @@ namespace DeepSeaGame
             _playerArmController = GetComponent<PlayerArmController>();
             _flashlightController = GetComponent<FlashlightController>();
 
-            _inAirHeathBuff = new("InAirHealthBuff", StatType.MaxHealth, percentAmount: 0.5f);
-            _inWaterHealthBuff = new("InWaterHealthBuff", StatType.MaxHealth, percentAmount: 0.5f, duration: 5f);
+            // Create runtime instances from SOs if provided, otherwise fall back to defaults.
+            _inAirHeathBuff = _inAirHealthBuffSO != null ? _inAirHealthBuffSO.CreateBuffInstance() : new("InAirHealthBuff", StatType.MaxHealth, percentAmount: 0.5f);
+            _inWaterHealthBuff = _inWaterHealthBuffSO != null ? _inWaterHealthBuffSO.CreateBuffInstance() : new("InWaterHealthBuff", StatType.MaxHealth, percentAmount: 0.5f, duration: 5f);
         }
 
         public override void OnDestroy()
