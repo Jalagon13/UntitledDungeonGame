@@ -33,12 +33,18 @@ namespace DeepSeaGame
 
         [HideInInspector]
         public Vector2 SpawnPoint;
+        
+        private Buff _inAirHeathBuff;
+        private Buff _inWaterHealthBuff;
 
         private void Awake()
         {
             _character = GetComponent<ServerCharacter>();
             _playerArmController = GetComponent<PlayerArmController>();
             _flashlightController = GetComponent<FlashlightController>();
+
+            _inAirHeathBuff = new("InAirHealthBuff", StatType.MaxHealth, percentAmount: 0.5f);
+            _inWaterHealthBuff = new("InWaterHealthBuff", StatType.MaxHealth, percentAmount: 0.5f, duration: 5f);
         }
 
         public override void OnDestroy()
@@ -59,6 +65,11 @@ namespace DeepSeaGame
                 InventoryManager.Instance.OnInventoryOpenChanged -= OnInventoryOpenChanged;
                 InventoryManager.Instance.OnSelectedHotbarSlotChanged -= OnSelectedHotbarSlotChanged;
             }
+
+            if (Character != null)
+            {
+                Character.CurrentStatus.OnValueChanged -= OnCurrentStatusChanged;
+            }
         }
 
         public void OnNetworkSpawnLocalClientInitializations()
@@ -73,10 +84,26 @@ namespace DeepSeaGame
             // local player start up code here, maybe input
             GameInput.Instance.OnMove += GameInput_OnMove;
             GameInput.Instance.OnJump += GameInput_OnJump;
-
             InventoryManager.Instance.OnInventoryOpenChanged += OnInventoryOpenChanged;
             InventoryManager.Instance.OnSelectedHotbarSlotChanged += OnSelectedHotbarSlotChanged;
+            Character.CurrentStatus.OnValueChanged += OnCurrentStatusChanged;
             SyncSelectedItemToCurrentHotbarSelection();
+        }
+
+        private void OnCurrentStatusChanged(Status previousValue, Status newValue)
+        {
+            if(previousValue == Status.InWater && newValue == Status.InAir)
+            {
+                Character.Stats.StopBuff(_inWaterHealthBuff);
+                Character.Stats.StartBuff(_inAirHeathBuff);
+                Debug.Log($"in air");
+            }
+            else if (previousValue == Status.InAir && newValue == Status.InWater)
+            {
+                Character.Stats.StopBuff(_inAirHeathBuff);
+                Character.Stats.StartBuff(_inWaterHealthBuff);
+                Debug.Log($"in water");
+            }
         }
 
         private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
@@ -142,7 +169,7 @@ namespace DeepSeaGame
         {
             transform.SetPositionAndRotation(SpawnPoint, Quaternion.identity);
             StartCoroutine(_character.StartIFrameTimer());
-            _character.DamageReceiver.ReceiveHP(_character, _character.RuntimeStats.MaxHealth.GetValue(), false);
+            _character.DamageReceiver.ReceiveHP(_character, _character.Stats.MaxHealth.GetValue(), false);
         }
     }
 }

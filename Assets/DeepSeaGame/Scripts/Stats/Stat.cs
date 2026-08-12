@@ -1,4 +1,4 @@
-using Unity.Mathematics;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DeepSeaGame
@@ -6,6 +6,7 @@ namespace DeepSeaGame
     public class Stat
     {
         private readonly int _baseAmount;
+        private readonly List<StatModifier> _modifiers = new();
 
         private bool _dirty = true;
         private int _finalValue;
@@ -15,16 +16,18 @@ namespace DeepSeaGame
             _baseAmount = baseAmount;
         }
         
-        public void AddModifier()
+        public void AddModifier(StatModifier modifier)
         {
-            // WIP
+            _modifiers.Add(modifier);
             _dirty = true;
         }
         
-        public void RemoveModifier()
+        public void RemoveModifier(StatModifier modifier)
         {
-            // WIP
-            _dirty = true;
+            if (_modifiers.Remove(modifier))
+            {
+                _dirty = true;
+            }
         }
 
         public int GetValue()
@@ -33,19 +36,22 @@ namespace DeepSeaGame
             return _finalValue;
         }
 
-        // WIP
         private void Recalculate()
         {
             int flat = 0;
             float percent = 1f;
 
-            // foreach (var mod in _modifiers)
-            // {
-            //     if (mod.Type == StatModifierType.Flat)
-            //         flat += mod.Value;
-            //     else if (mod.Type == StatModifierType.Percent)
-            //         percent += mod.Value;
-            // }
+            foreach (var modifier in _modifiers)
+            {
+                if (modifier.Type == StatModifierType.Flat)
+                {
+                    flat += Mathf.RoundToInt(modifier.Value);
+                }
+                else if (modifier.Type == StatModifierType.Percent)
+                {
+                    percent += modifier.Value;
+                }
+            }
 
             _finalValue = Mathf.RoundToInt((_baseAmount + flat) * percent);
             _dirty = false;

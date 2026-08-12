@@ -39,7 +39,7 @@ namespace DeepSeaGame
         // public BuffHandler BuffHandler { get; private set; }
 
         private CharacterStats _characterStats;
-        public CharacterStats RuntimeStats => _characterStats;
+        public CharacterStats Stats => _characterStats;
 
         protected StateMachine _stateMachine;
         public StateMachine StateMachine => _stateMachine;

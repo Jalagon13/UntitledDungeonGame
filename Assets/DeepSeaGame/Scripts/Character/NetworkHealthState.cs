@@ -42,18 +42,18 @@ namespace DeepSeaGame
 
         private void HitPointsChanged(int previousValue, int newValue)
         {
-            OnHitPointsChanged?.Invoke(this, new PointsChangedEventArgs(HitPoints.Value, _serverCharacter.RuntimeStats.MaxHealth.GetValue()));
+            OnHitPointsChanged?.Invoke(this, new PointsChangedEventArgs(HitPoints.Value, _serverCharacter.Stats.MaxHealth.GetValue()));
         }
 
         public bool IsFullHp()
         {
-            return HitPoints.Value >= _serverCharacter.RuntimeStats.MaxHealth.GetValue();
+            return HitPoints.Value >= _serverCharacter.Stats.MaxHealth.GetValue();
         }
 
         public void AddHp(int amount)
         {
             // Double check with GPT if this logic is correct
-            HitPoints.Value += Mathf.Clamp(amount, 0, _serverCharacter.RuntimeStats.MaxHealth.GetValue());
+            HitPoints.Value += Mathf.Clamp(amount, 0, _serverCharacter.Stats.MaxHealth.GetValue());
         }
     }
 }
