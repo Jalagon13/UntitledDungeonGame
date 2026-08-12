@@ -17,7 +17,7 @@ namespace DeepSeaGame
         public Buff CreateBuffInstance()
         {
             string nameToUse = string.IsNullOrWhiteSpace(BuffName) ? name : BuffName;
-            return new Buff(nameToUse, TargetStat, FlatAmount, PercentAmount, Duration);
+            return new Buff(nameToUse, TargetStat, FlatAmount, PercentAmount, Duration, BuffSprite);
         }
     }
 }

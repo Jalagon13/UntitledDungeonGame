@@ -272,4 +272,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.BuffDisplayUI
   _buffIcon: {fileID: 5390667504273738920}
-  _buffName: {fileID: 2000875812413321039}
+  _durationText: {fileID: 2000875812413321039}

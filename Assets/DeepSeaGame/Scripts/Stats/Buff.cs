@@ -40,10 +40,11 @@ namespace DeepSeaGame
         public float PercentAmount { get; }
         public float RemainingDuration { get; private set; }
         private readonly float _defaultDuration;
+        public Sprite Icon { get; }
         public bool IsIndefinite => RemainingDuration < 0f;
         public bool IsActive { get; private set; }
 
-        public Buff(string name, StatType targetStat, int flatAmount = 0, float percentAmount = 0f, float duration = -1f)
+        public Buff(string name, StatType targetStat, int flatAmount = 0, float percentAmount = 0f, float duration = -1f, Sprite icon = null)
         {
             Name = string.IsNullOrWhiteSpace(name) ? "Unnamed Buff" : name;
             TargetStat = targetStat;
@@ -51,6 +52,7 @@ namespace DeepSeaGame
             PercentAmount = percentAmount;
             RemainingDuration = duration;
             _defaultDuration = duration;
+            Icon = icon;
             IsActive = true;
         }
 
