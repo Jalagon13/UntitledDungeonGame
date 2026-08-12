@@ -38,6 +38,7 @@ namespace DeepSeaGame
         public override void Initialize(WorldGenerationData worldGenerationData)
         {
             base.Initialize(worldGenerationData);
+            Debug.Log($"");
 
             if (_spriteRenderer == null || _spriteRenderer.sprite == null) return;
 
