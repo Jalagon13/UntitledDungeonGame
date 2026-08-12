@@ -12,6 +12,7 @@ namespace DeepSeaGame
         public float PercentAmount = 0f;
         [Tooltip("Duration in seconds. Negative for indefinite.")]
         public float Duration = -1f;
+        public Sprite BuffSprite;
 
         public Buff CreateBuffInstance()
         {
