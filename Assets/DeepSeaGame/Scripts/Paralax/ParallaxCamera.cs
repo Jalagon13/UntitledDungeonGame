@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
-    [ExecuteInEditMode]
     public class ParallaxCamera : MonoBehaviour
     {
         public ParallaxCameraDelegate OnCameraTranslate;

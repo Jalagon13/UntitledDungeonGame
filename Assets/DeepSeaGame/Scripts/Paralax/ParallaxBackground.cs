@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
-    [ExecuteInEditMode]
     public class ParallaxBackground : MonoBehaviour
     {
         public ParallaxCamera ParallaxCamera;
@@ -13,27 +12,40 @@ namespace DeepSeaGame
         private void Start()
         {
             if (ParallaxCamera == null)
-                ParallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
+            {
+                if (Camera.main != null)
+                {
+                    ParallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
+                }
+
+                if (ParallaxCamera == null)
+                {
+                    ParallaxCamera = UnityEngine.Object.FindFirstObjectByType<ParallaxCamera>();
+                }
+            }
 
             if (ParallaxCamera != null)
+            {
                 ParallaxCamera.OnCameraTranslate += Move;
+            }
 
-            SetLayers();
-        }
-
-        private void SetLayers()
-        {
             _parallaxLayers.Clear();
 
-            for (int i = 0; i < transform.childCount; i++)
+            ParallaxLayer[] layers = GetComponentsInChildren<ParallaxLayer>();
+            foreach (var layer in layers)
             {
-                ParallaxLayer layer = transform.GetChild(i).GetComponent<ParallaxLayer>();
-
                 if (layer != null)
                 {
-                    layer.name = "Layer-" + i;
                     _parallaxLayers.Add(layer);
                 }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (ParallaxCamera != null)
+            {
+                ParallaxCamera.OnCameraTranslate -= Move;
             }
         }
 

@@ -19,6 +19,7 @@ namespace DeepSeaGame
 
         [Header("Ocean Visuals")]
         [SerializeField] private ParallaxLayer _undergroundLayer;
+        [SerializeField] private SurfaceParallax _surfaceParallax;
 
         private WorldGenerationData _worldGenerationData;
 
@@ -70,6 +71,12 @@ namespace DeepSeaGame
             Player.Instance.SpawnPoint = spawnPosition;
             
             _undergroundLayer.Initialize(_worldGenerationData);
+            if (_surfaceParallax != null)
+            {
+                _surfaceParallax.Initialize(_worldGenerationData);
+                _surfaceParallax.SetPlayerTransform(Player.Instance.transform);
+                _surfaceParallax.ResetToPlayerPosition(Player.Instance.transform.position);
+            }
 
             IsWorldReady = true;
             OnWorldReady?.Invoke();

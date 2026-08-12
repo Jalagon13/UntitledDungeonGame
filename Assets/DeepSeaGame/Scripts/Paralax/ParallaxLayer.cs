@@ -2,21 +2,20 @@ using UnityEngine;
 
 namespace DeepSeaGame
 {
-    [ExecuteInEditMode]
     public class ParallaxLayer : MonoBehaviour
     {
         public float ParallaxFactor;
         
-        private WorldGenerationData _worldGenerationData;
-        private SpriteRenderer _spriteRenderer;
-        private bool _hasBeenInitalized;
-        
-        private void Awake() 
+        protected WorldGenerationData _worldGenerationData;
+        protected SpriteRenderer _spriteRenderer;
+        protected bool _hasBeenInitalized;
+
+        protected virtual void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public void Initialize(WorldGenerationData worldGenerationData)
+        public virtual void Initialize(WorldGenerationData worldGenerationData)
         {
             _worldGenerationData = worldGenerationData;
             
@@ -28,7 +27,7 @@ namespace DeepSeaGame
             _hasBeenInitalized = true;
         }
 
-        public void Move(float delta)
+        public virtual void Move(float delta)
         {
             if(!_hasBeenInitalized) return;
         
