@@ -325,12 +325,6 @@ namespace DeepSeaGame
                 return false;
             }
 
-            bool isInOceanZone = worldDataStore.IsBelowSeaLevel(spawnPosition.y);
-            if(!isInOceanZone)
-            {
-                return false;
-            }
-        
             if(IsInAnyPlayerInnerZone(potentialSpawnPoint))
             {
                 return false;

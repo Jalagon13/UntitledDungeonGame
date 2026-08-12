@@ -19,7 +19,7 @@ namespace DeepSeaGame
             WorldDataStore dataStore = context.DataStore;
             System.Random random = context.Random;
             int width = dataStore.Width;
-            int seaLevel = dataStore.SeaLevelY;
+            int height = dataStore.Height;
             
             ushort kelpId = GameDataRegistry.Instance.GetTileIdFromTileSO(_kelpTile);
             ushort sandId = GameDataRegistry.Instance.GetTileIdFromTileSO(_sandTile);
@@ -49,7 +49,7 @@ namespace DeepSeaGame
 
                 // Travel downward from sea level to find a solid foreground tile
                 int hitY = -1;
-                for (int y = seaLevel; y >= 0; y--)
+                for (int y = height; y >= 0; y--)
                 {
                     ushort tileId = dataStore.GetTileId(x, y, WorldTm.ForegroundTilemap);
                     if (tileId != GameDataRegistry.INVALID_ID)
@@ -74,7 +74,7 @@ namespace DeepSeaGame
                             int placeY = hitY + i;
                             
                             // Stop if we hit sea level (kelp shouldn't grow above sea level)
-                            if (placeY >= seaLevel)
+                            if (placeY >= height)
                             {
                                 break;
                             }

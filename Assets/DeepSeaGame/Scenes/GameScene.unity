@@ -554,7 +554,7 @@ GameObject:
   - component: {fileID: 116133565}
   - component: {fileID: 116133566}
   m_Layer: 0
-  m_Name: Layer-0
+  m_Name: UndergroundBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4101,9 +4101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185e1318f7d54de180fd6a6eb8731fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDeepSeaGame.WorldTileStreamingRenderer
-  _airMaskStencilMaterial: {fileID: 0}
-  _airShader: {fileID: 4800000, guid: da63a9370f83b4ff2add7ecc44267305, type: 3}
-  _airMaskSortingOrder: 98
 --- !u!1 &890717787
 GameObject:
   m_ObjectHideFlags: 0
@@ -9219,8 +9216,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UntitledDungeonGame.WorldManager
   ShowTopMostFoldoutHeaderGroup: 1
   <WorldGenerator>k__BackingField: {fileID: 885515392}
-  _oceanRenderer: {fileID: 0}
-  _oceanSurfaceRenderer: {fileID: 0}
   _undergroundLayer: {fileID: 116133566}
 --- !u!114 &1937983707
 MonoBehaviour:

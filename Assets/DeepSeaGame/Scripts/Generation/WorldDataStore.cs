@@ -31,8 +31,6 @@ namespace DeepSeaGame
         public int Width => FgTileData.GetLength(0);
         public int Height => FgTileData.GetLength(1);
         
-        private readonly int _seaLevelY;
-        public int SeaLevelY => _seaLevelY;
         
         private readonly WorldGenerationData _data;
         
@@ -43,7 +41,6 @@ namespace DeepSeaGame
             FgTileData = new ushort[_data.WorldWidth, _data.WorldHeight];
             BgTileData = new ushort[_data.WorldWidth, _data.WorldHeight];
 
-            _seaLevelY = Mathf.Clamp(_data.SeaLevelY, 1, Mathf.Max(1, _data.WorldHeight - 1));
             _underwaterAirTiles.Clear();
             ActiveMultiTiles = new();
 
@@ -59,12 +56,7 @@ namespace DeepSeaGame
 
         public BiomeType GetBiomeAt(int x, int y)
         {
-            if(y >= _seaLevelY)
-            {
-                return BiomeType.None;
-            }
-            
-            if(y < _seaLevelY && y > _data.UndergroundMaxYLevel)
+            if(y > _data.UndergroundMaxYLevel)
             {       
                 return BiomeType.Surface;
             }
@@ -223,14 +215,9 @@ namespace DeepSeaGame
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
         
-        public bool IsBelowSeaLevel(int y)
-        {
-            return y >= 0 && y < _seaLevelY;
-        }
-        
         public bool IsUnderwaterAirAt(int x, int y)
         {
-            if (!IsInBounds(x, y) || !IsBelowSeaLevel(y))
+            if (!IsInBounds(x, y))
             {
                 return false;
             }
@@ -240,7 +227,7 @@ namespace DeepSeaGame
 
         public void AddUnderwaterAirTile(int x, int y)
         {
-            if (!IsInBounds(x, y) || !IsBelowSeaLevel(y))
+            if (!IsInBounds(x, y))
             {
                 return;
             }
@@ -253,7 +240,7 @@ namespace DeepSeaGame
 
         public void RemoveUnderwaterAirTile(int x, int y)
         {
-            if (!IsInBounds(x, y) || !IsBelowSeaLevel(y))
+            if (!IsInBounds(x, y))
             {
                 return;
             }

@@ -71,7 +71,7 @@ namespace DeepSeaGame
             {
                 DrainWater(instance.Anchor, dataStore, visited);
             }
-            else if(dataStore.IsBelowSeaLevel(instance.Anchor.y) && dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y))
+            else if(dataStore.IsUnderwaterAirAt(instance.Anchor.x, instance.Anchor.y))
             {
                 FillWater(instance.Anchor, dataStore, visited);
             }

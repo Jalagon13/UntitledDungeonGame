@@ -47,7 +47,7 @@ namespace DeepSeaGame
             {
                 Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
                 WorldDataStore worldData = WorldManager.Instance.WorldDataStore;
-                bool isInAir = !worldData.IsBelowSeaLevel(gridPos.y) || worldData.IsUnderwaterAirAt(gridPos.x, gridPos.y);
+                bool isInAir = worldData.IsUnderwaterAirAt(gridPos.x, gridPos.y);
 
                 if (isInAir)
                 {

@@ -15,7 +15,7 @@ namespace DeepSeaGame
             if (Player.Instance == null || _depthText == null)
                 return;
 
-            float relativeUnits = WorldManager.Instance.WorldDataStore.SeaLevelY - Player.Instance.transform.position.y;
+            float relativeUnits = WorldManager.Instance.WorldDataStore.Height - Player.Instance.transform.position.y;
 
             if (_useMetric)
             {
