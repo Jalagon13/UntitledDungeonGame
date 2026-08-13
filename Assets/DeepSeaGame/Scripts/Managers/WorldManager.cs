@@ -69,8 +69,8 @@ namespace DeepSeaGame
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             Player.Instance.SpawnPoint = spawnPosition;
 
-            _surfaceBg.Initialize(spawnPosition);
-            // _undergroundBg
+            _surfaceBg.Initialize();
+            _undergroundBg.Initialize(_worldGenerationData);
 
             IsWorldReady = true;
             OnWorldReady?.Invoke();

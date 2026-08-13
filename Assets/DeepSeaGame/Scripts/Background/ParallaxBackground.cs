@@ -32,7 +32,7 @@ namespace DeepSeaGame
             }
         }
 
-        public void Initialize(Vector3 spawnPosition)
+        public void Initialize()
         {
             StartCoroutine(DelayInitialization());
         }
