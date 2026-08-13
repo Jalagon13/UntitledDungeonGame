@@ -10,7 +10,7 @@ namespace DeepSeaGame
         private WorldDataStore _worldDataStore;
         private Tilemap _foregroundTilemap;
         private Tilemap _backgroundTilemap;
-        private Tilemap _airTilemap;
+        private Tilemap _waterTilemap;
         private TilemapRenderer _airTilemapRenderer;
         private Transform _multiTileRenderingTf;
         private RectInt _renderedBounds;
@@ -46,11 +46,11 @@ namespace DeepSeaGame
             _worldDataStore = worldDataStore;
             _foregroundTilemap = foregroundTilemap;
             _backgroundTilemap = backgroundTilemap;
-            _airTilemap = airTilemap;
-            _airTilemapRenderer = _airTilemap != null ? _airTilemap.GetComponent<TilemapRenderer>() : null;
+            _waterTilemap = airTilemap;
+            _airTilemapRenderer = _waterTilemap != null ? _waterTilemap.GetComponent<TilemapRenderer>() : null;
             _multiTileRenderingTf = multiTileRenderingTf;
 
-            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _airTilemap != null && _airTilemapRenderer != null;
+            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _waterTilemap != null && _airTilemapRenderer != null;
             _hasRenderedBounds = false;
             _renderedBounds = default;
 
@@ -65,7 +65,7 @@ namespace DeepSeaGame
             
             _foregroundTilemap.ClearAllTiles();
             _backgroundTilemap.ClearAllTiles();
-            _airTilemap.ClearAllTiles();
+            _waterTilemap.ClearAllTiles();
             
             // Clean up any existing multi-tile GameObjects
             foreach (var go in _spawnedMultiTileObjects.Values)
@@ -179,10 +179,10 @@ namespace DeepSeaGame
 
         private void ApplyTile(int x, int y, WorldTm targetMap)
         {
-            if (targetMap == WorldTm.AirTilemap)
+            if (targetMap == WorldTm.WaterTilemap)
             {
                 bool hasUnderwaterAir = _worldDataStore.IsUnderwaterAirAt(x, y);
-                _airTilemap.SetTile(new Vector3Int(x, y, 0), hasUnderwaterAir ? GameDataRegistry.Instance.AirTile : null);
+                _waterTilemap.SetTile(new Vector3Int(x, y, 0), hasUnderwaterAir ? GameDataRegistry.Instance.WaterTile : null);
 
                 return;
             }
@@ -281,7 +281,7 @@ namespace DeepSeaGame
                 {
                     ApplyTile(x, y, WorldTm.ForegroundTilemap);
                     ApplyTile(x, y, WorldTm.BackgroundTilemap);
-                    ApplyTile(x, y, WorldTm.AirTilemap);
+                    ApplyTile(x, y, WorldTm.WaterTilemap);
                 }
             }
 
@@ -310,7 +310,7 @@ namespace DeepSeaGame
                 {
                     _foregroundTilemap.SetTile(new Vector3Int(x, y, 0), null);
                     _backgroundTilemap.SetTile(new Vector3Int(x, y, 0), null);
-                    _airTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                    _waterTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
 

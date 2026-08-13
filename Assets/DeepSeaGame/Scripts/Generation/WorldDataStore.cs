@@ -94,7 +94,7 @@ namespace DeepSeaGame
                 bool removed = _underwaterAirTiles.Remove(GetTileIndex(x, y));
                 if (removed)
                 {
-                    TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+                    TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.WaterTilemap);
                 }
             }
             else
@@ -234,7 +234,7 @@ namespace DeepSeaGame
 
             if (_underwaterAirTiles.Add(GetTileIndex(x, y)))
             {
-                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.WaterTilemap);
             }
         }
 
@@ -247,7 +247,7 @@ namespace DeepSeaGame
 
             if (_underwaterAirTiles.Remove(GetTileIndex(x, y)))
             {
-                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.AirTilemap);
+                TileChanged?.Invoke(new Vector2Int(x, y), GameDataRegistry.INVALID_ID, GameDataRegistry.INVALID_ID, WorldTm.WaterTilemap);
             }
         }
         

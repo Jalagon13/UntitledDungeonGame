@@ -21,7 +21,7 @@ namespace DeepSeaGame
     {
         ForegroundTilemap,
         BackgroundTilemap,
-        AirTilemap
+        WaterTilemap
     }
 
     public enum TileBreakMode

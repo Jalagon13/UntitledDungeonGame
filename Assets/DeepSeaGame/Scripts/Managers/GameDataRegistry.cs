@@ -16,8 +16,8 @@ namespace DeepSeaGame
         [Space(15)]
         
         [SerializeField] 
-        private TileBase _airTile;
-        public TileBase AirTile => _airTile;
+        private TileBase _waterTile;
+        public TileBase WaterTile => _waterTile;
         
         [SerializeField]
         private List<TileSO> _tileData;
