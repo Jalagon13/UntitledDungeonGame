@@ -11,6 +11,7 @@ namespace DeepSeaGame
 
         [field: SerializeField] public WorldGenerator WorldGenerator { get; private set; }
         [SerializeField] private ParallaxBackground _surfaceBg;
+        [SerializeField] private UndergroundBackground _undergroundBg;
 
 
         public WorldDataStore WorldDataStore { get; private set; }
@@ -69,6 +70,7 @@ namespace DeepSeaGame
             Player.Instance.SpawnPoint = spawnPosition;
 
             _surfaceBg.Initialize(spawnPosition);
+            // _undergroundBg
 
             IsWorldReady = true;
             OnWorldReady?.Invoke();
