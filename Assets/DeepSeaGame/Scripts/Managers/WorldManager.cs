@@ -9,17 +9,15 @@ namespace DeepSeaGame
     {
         public static WorldManager Instance { get; private set; }
 
-        [field: SerializeField] 
-        public WorldGenerator WorldGenerator { get; private set; }
+        [field: SerializeField] public WorldGenerator WorldGenerator { get; private set; }
+        [SerializeField] private ParallaxBackground _surfaceBg;
+
+
         public WorldDataStore WorldDataStore { get; private set; }
         public WorldTileStreamingRenderer TileStreamingRenderer { get; private set; }
         public bool IsWorldReady { get; private set; }
         
         public event Action OnWorldReady;
-
-        [Header("Ocean Visuals")]
-        [SerializeField] private ParallaxLayer _undergroundLayer;
-        [SerializeField] private SurfaceParallax _surfaceParallax;
 
         private WorldGenerationData _worldGenerationData;
 
@@ -69,14 +67,8 @@ namespace DeepSeaGame
             Vector3 spawnPosition = ResolveSpawnWorldPosition(WorldGenerator.SpawnTile);
             Player.Instance.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             Player.Instance.SpawnPoint = spawnPosition;
-            
-            _undergroundLayer.Initialize(_worldGenerationData);
-            if (_surfaceParallax != null)
-            {
-                _surfaceParallax.Initialize(_worldGenerationData);
-                _surfaceParallax.SetPlayerTransform(Player.Instance.transform);
-                _surfaceParallax.ResetToPlayerPosition(Player.Instance.transform.position);
-            }
+
+            _surfaceBg.Initialize(spawnPosition);
 
             IsWorldReady = true;
             OnWorldReady?.Invoke();
