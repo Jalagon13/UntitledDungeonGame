@@ -18,8 +18,9 @@ namespace DeepSeaGame
         public Tilemap ForegroundTilemap => _forgroundTilemap;
 
         [SerializeField]
-        private Tilemap _airTilemap;
-        public Tilemap AirTilemap => _airTilemap;
+        [UnityEngine.Serialization.FormerlySerializedAs("_airTilemap")]
+        private Tilemap _waterTilemap;
+        public Tilemap WaterTilemap => _waterTilemap;
         
         [SerializeField] private Transform _multiTileRenderingTransform;
         public Transform MultiTileRenderingTransform => _multiTileRenderingTransform;

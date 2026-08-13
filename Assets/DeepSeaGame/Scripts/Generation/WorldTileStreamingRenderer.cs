@@ -11,7 +11,7 @@ namespace DeepSeaGame
         private Tilemap _foregroundTilemap;
         private Tilemap _backgroundTilemap;
         private Tilemap _waterTilemap;
-        private TilemapRenderer _airTilemapRenderer;
+        private TilemapRenderer _waterTilemapRenderer;
         private Transform _multiTileRenderingTf;
         private RectInt _renderedBounds;
         private bool _isInitialized;
@@ -35,7 +35,7 @@ namespace DeepSeaGame
             }
         }
 
-        public void Initialize(WorldDataStore worldDataStore, Tilemap foregroundTilemap, Tilemap backgroundTilemap, Tilemap airTilemap, Transform multiTileRenderingTf)
+        public void Initialize(WorldDataStore worldDataStore, Tilemap foregroundTilemap, Tilemap backgroundTilemap, Tilemap waterTilemap, Transform multiTileRenderingTf)
         {
             if (_worldDataStore != null)
             {
@@ -46,11 +46,11 @@ namespace DeepSeaGame
             _worldDataStore = worldDataStore;
             _foregroundTilemap = foregroundTilemap;
             _backgroundTilemap = backgroundTilemap;
-            _waterTilemap = airTilemap;
-            _airTilemapRenderer = _waterTilemap != null ? _waterTilemap.GetComponent<TilemapRenderer>() : null;
+            _waterTilemap = waterTilemap;
+            _waterTilemapRenderer = _waterTilemap != null ? _waterTilemap.GetComponent<TilemapRenderer>() : null;
             _multiTileRenderingTf = multiTileRenderingTf;
 
-            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _waterTilemap != null && _airTilemapRenderer != null;
+            _isInitialized = _worldDataStore != null && _foregroundTilemap != null && _backgroundTilemap != null && _waterTilemap != null && _waterTilemapRenderer != null;
             _hasRenderedBounds = false;
             _renderedBounds = default;
 
@@ -182,7 +182,7 @@ namespace DeepSeaGame
             if (targetMap == WorldTm.WaterTilemap)
             {
                 bool hasUnderwaterAir = _worldDataStore.IsUnderwaterAirAt(x, y);
-                _waterTilemap.SetTile(new Vector3Int(x, y, 0), hasUnderwaterAir ? GameDataRegistry.Instance.WaterTile : null);
+                _waterTilemap.SetTile(new Vector3Int(x, y, 0), hasUnderwaterAir ? null : GameDataRegistry.Instance.WaterTile);
 
                 return;
             }
