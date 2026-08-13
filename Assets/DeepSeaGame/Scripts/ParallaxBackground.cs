@@ -9,7 +9,7 @@ namespace DeepSeaGame
         [SerializeField] private GameObject _camera;
         [SerializeField] private float _parallaxEffect;
         
-        private float _length, _startPos;
+        private float _length, _startPos, _startPosY;
         private bool _initialized;
         
         private void FixedUpdate() 
@@ -18,8 +18,9 @@ namespace DeepSeaGame
         
             float temp = _camera.transform.position.x * (1 - _parallaxEffect);
             float distance = _camera.transform.position.x * _parallaxEffect;
+            float distanceY = _camera.transform.position.y * _parallaxEffect;
             
-            transform.position = new Vector3(_startPos + distance, transform.position.y, transform.position.z);
+            transform.position = new Vector3(_startPos + distance, _startPosY + distanceY, transform.position.z);
             
             if(temp > _startPos + _length)
             {
@@ -43,6 +44,7 @@ namespace DeepSeaGame
             // Compute start position relative to the camera so we don't double-count
             // the camera's world position when applying the parallax distance.
             _startPos = transform.position.x - _camera.transform.position.x * _parallaxEffect;
+            _startPosY = transform.position.y - _camera.transform.position.y * _parallaxEffect;
             _length = GetComponent<SpriteRenderer>().bounds.size.x;
             
             _initialized = true;
