@@ -12,7 +12,7 @@ namespace DeepSeaGame
             int centerX = context.Config.WorldWidth / 2;
             int seaLevelY = context.Config.SeaLevelY;
 
-            context.SpawnTile = new Vector3Int(centerX, seaLevelY - 1, 0);
+            context.SpawnTile = new Vector3Int(centerX, seaLevelY - 14, 0);
             context.SetStepProgress(1f);
             yield break;
         }

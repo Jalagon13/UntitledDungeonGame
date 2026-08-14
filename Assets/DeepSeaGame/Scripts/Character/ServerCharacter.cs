@@ -69,7 +69,7 @@ namespace DeepSeaGame
         {
             _damageReceiver = GetComponent<DamageReceiver>();
             _gridCollider = GetComponent<GridCollider>();
-            _characterStats = new(_characterData);
+            _characterStats = new(_characterData, this);
 
             NetHealthState = GetComponent<NetworkHealthState>();
             

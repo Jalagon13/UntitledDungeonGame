@@ -101,13 +101,13 @@ namespace DeepSeaGame
             {
                 Character.Stats.StopBuff(_inWaterHealthBuff);
                 Character.Stats.StartBuff(_inAirHeathBuff);
-                Debug.Log($"in air");
+                
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.OxygenReplenishSFX, transform.position);
             }
             else if (previousValue == Status.InAir && newValue == Status.InWater)
             {
                 Character.Stats.StopBuff(_inAirHeathBuff);
-                Character.Stats.StartBuff(_inWaterHealthBuff);
-                Debug.Log($"in water");
+                Character.Stats.StartBuff(_inWaterHealthBuff, false);
             }
         }
 

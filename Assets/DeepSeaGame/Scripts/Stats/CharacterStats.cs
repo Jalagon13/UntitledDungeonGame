@@ -14,10 +14,14 @@ namespace DeepSeaGame
 
         private readonly List<Buff> _activeBuffs = new();
         public IReadOnlyList<Buff> ActiveBuffs => _activeBuffs;
+        
+        private ServerCharacter _character;
 
 
-        public CharacterStats(CharacterSO data)
+        public CharacterStats(CharacterSO data, ServerCharacter character)
         {
+            _character = character;
+
             MoveSpeed = new(data.BaseSpeed);
             MaxHealth = new(data.BaseMaxHealth);
             Defense = new(data.BaseDefense);
@@ -37,15 +41,19 @@ namespace DeepSeaGame
             }
         }
 
-        public void StartBuff(Buff buff)
+        public void StartBuff(Buff buff, bool showWorldText = true)
         {
             if (buff == null) return;
             if (_activeBuffs.Contains(buff)) return;
 
             _activeBuffs.Add(buff);
             buff.ApplyTo(this);
-            Debug.Log($"Added buff {buff.Name}");
             OnBuffStarted?.Invoke(buff);
+            
+            if(showWorldText)
+            {
+                GameManager.Instance.SpawnWorldText($"+{buff.Name} Buff", _character.transform.position + new Vector3(0, 2f, 0), Color.cyan, 0.5f, 1.5f);
+            }
         }
 
         public void StopBuff(Buff buff)
@@ -54,7 +62,6 @@ namespace DeepSeaGame
             if (!_activeBuffs.Remove(buff)) return;
 
             buff.Stop(this);
-            Debug.Log($"Stop buff {buff.Name}");
             OnBuffStopped?.Invoke(buff);
         }
 

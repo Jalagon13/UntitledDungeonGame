@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c912b585c7b14bea804520feee43d28, type: 3}
-  m_Name: WellOxygenatedWaterBuff
+  m_Name: FreshAirToAirBuff
   m_EditorClassIdentifier: Assembly-CSharp::DeepSeaGame.BuffSO
-  BuffName: Well Oxygenated
+  BuffName: Fresh Air
   TargetStat: 1
   FlatAmount: 0
   PercentAmount: 1.5
-  Duration: 5
+  Duration: -1
   BuffSprite: {fileID: 21300002, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}

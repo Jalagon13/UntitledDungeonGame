@@ -68,16 +68,20 @@ namespace DeepSeaGame
                 }
             }
 
-            // Rotate player visuals so their y-axis points toward the velocity direction, lerping smoothly
-            Quaternion targetVisualRotation = default;
-            
-            if (Player.Instance.Character.StateMachine.CurrentState.StateKey == AIState.Locomotion && _velocity.sqrMagnitude > 20f)
+            // Default to keeping the current visual rotation so stopping doesn't snap to upright.
+            Quaternion targetVisualRotation = _currentVisualRotation;
+
+            var currentState = Player.Instance.Character.StateMachine.CurrentState.StateKey;
+
+            if (currentState == AIState.Locomotion && _velocity.sqrMagnitude > 10f)
             {
-                Vector3 velocityDirection = new Vector3(_velocity.x, _velocity.y, 0f).normalized;
-                targetVisualRotation = Quaternion.FromToRotation(Vector3.up, velocityDirection);
+                Vector2 velocityDirection2D = new Vector2(_velocity.x, _velocity.y).normalized;
+                float angleDeg = Mathf.Atan2(-velocityDirection2D.x, velocityDirection2D.y) * Mathf.Rad2Deg;
+                targetVisualRotation = Quaternion.Euler(0f, 0f, angleDeg);
             }
-            else if(Player.Instance.Character.StateMachine.CurrentState.StateKey != AIState.Locomotion)
+            else if (currentState == AIState.Mining || currentState == AIState.Attacking)
             {
+                // When mining or attacking, rotate visuals back to upright/up-right (identity).
                 targetVisualRotation = Quaternion.identity;
             }
 

@@ -58,7 +58,7 @@ namespace DeepSeaGame
             OnPrototypeEnd?.Invoke();
         }
 
-        public void PlayDamageNumbers(int amount, Vector2 position, Color color)
+        public void SpawnWorldText(string text, Vector2 position, Color color, float fontSize = 1f, float duration = 0.5f)
         {
             _damageNumbersFeedback.enabled = true;
             MMF_FloatingText floatingText = _damageNumbersFeedback.GetFeedbackOfType<MMF_FloatingText>();
@@ -67,7 +67,12 @@ namespace DeepSeaGame
             GradientColorKey[] colorKey;
             GradientAlphaKey[] alphaKey;
 
-            floatingText.Value = amount.ToString();
+            floatingText.Value = text;
+            // use Intensity to control scale/font size (spawner must be configured to use intensity for scale)
+            floatingText.Intensity = fontSize;
+            // force a custom lifetime for this floating text
+            floatingText.ForceLifetime = true;
+            floatingText.Lifetime = duration;
 
             // we setup some fancy colors
             gradient = new Gradient();

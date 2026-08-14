@@ -32,7 +32,7 @@ namespace DeepSeaGame
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
         public void PlayDamageNumbersRpc(int damage)
         {
-            GameManager.Instance.PlayDamageNumbers(damage, transform.position, _damageColor);
+            GameManager.Instance.SpawnWorldText(damage.ToString(), transform.position, _damageColor);
         }
 
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
